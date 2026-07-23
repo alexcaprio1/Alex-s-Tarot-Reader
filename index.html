@@ -141,13 +141,20 @@
     /* Reading Results Grid */
     #reading-section {
       width: 100%;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     #reading-section h2 {
-      margin-bottom: 25px;
+      margin-bottom: 8px;
       font-size: 1.2rem;
       letter-spacing: 1px;
+    }
+
+    .reading-explanation {
+      color: #a0a0ab;
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+      font-style: italic;
     }
 
     .cards-container {
@@ -170,6 +177,29 @@
       align-items: center;
       text-align: center;
       cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    /* Standard Card Back Styling */
+    .card-back-design {
+      width: 100%;
+      height: 260px;
+      background: linear-gradient(135deg, #1f1f26 0%, #111115 100%);
+      border: 2px solid #3a3a45;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+      box-shadow: inset 0 0 15px rgba(255,255,255,0.05);
+    }
+
+    .card-back-design span {
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: #8a8a93;
+      text-transform: uppercase;
     }
 
     .card img {
@@ -249,21 +279,29 @@
 
     <!-- READING RESULTS -->
     <section id="reading-section" class="hidden">
-      <h2>Your 3-Card Reading</h2>
+      <h2 id="reading-title">Your Tarot Selection</h2>
+      <p id="reading-explanation" class="reading-explanation">Select one card below to receive your guidance for this reading.</p>
+      
       <div class="cards-container">
         <div class="card" id="card-0">
-          <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/RWS_Tarot_00_Fool.jpg" alt="Card Back">
-          <h4 class="card-title">Click to Reveal</h4>
+          <div class="card-back-design">
+            <span>🎴 Click to Choose</span>
+          </div>
+          <h4 class="card-title">Card I</h4>
           <p class="card-desc"></p>
         </div>
         <div class="card" id="card-1">
-          <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/RWS_Tarot_00_Fool.jpg" alt="Card Back">
-          <h4 class="card-title">Click to Reveal</h4>
+          <div class="card-back-design">
+            <span>🎴 Click to Choose</span>
+          </div>
+          <h4 class="card-title">Card II</h4>
           <p class="card-desc"></p>
         </div>
         <div class="card" id="card-2">
-          <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/RWS_Tarot_00_Fool.jpg" alt="Card Back">
-          <h4 class="card-title">Click to Reveal</h4>
+          <div class="card-back-design">
+            <span>🎴 Click to Choose</span>
+          </div>
+          <h4 class="card-title">Card III</h4>
           <p class="card-desc"></p>
         </div>
       </div>
@@ -303,6 +341,8 @@
     const chargeBtn = document.getElementById('charge-btn');
     const circle = document.querySelector('.progress-ring-circle');
     const readingSection = document.getElementById('reading-section');
+    const readingTitle = document.getElementById('reading-title');
+    const readingExplanation = document.getElementById('reading-explanation');
 
     const radius = circle.r.baseVal.value;
     const circumference = 2 * Math.PI * radius;
@@ -371,41 +411,50 @@
       const shuffled = [...deck].sort(() => 0.5 - Math.random());
       state.drawnCards = shuffled.slice(0, 3).map(card => ({
         ...card,
-        isReversed: Math.random() < 0.3,
-        revealed: false
+        isReversed: Math.random() < 0.3
       }));
+
+      // Reset section headers
+      readingTitle.textContent = "Your Tarot Selection";
+      readingExplanation.textContent = `Focused on ${state.focus} with intention of ${state.intention}. Pick one card below to reveal your path.`;
 
       [0, 1, 2].forEach(idx => {
         const cardEl = document.getElementById(`card-${idx}`);
-        const newCardEl = cardEl.cloneNode(true);
-        cardEl.parentNode.replaceChild(newCardEl, cardEl);
+        cardEl.classList.remove('hidden');
+        cardEl.innerHTML = `
+          <div class="card-back-design">
+            <span>🎴 Click to Choose</span>
+          </div>
+          <h4 class="card-title">Card ${idx + 1}</h4>
+          <p class="card-desc"></p>
+        `;
 
-        const img = newCardEl.querySelector('.card-img');
-        const title = newCardEl.querySelector('.card-title');
-        const desc = newCardEl.querySelector('.card-desc');
-
-        img.src = 'https://upload.wikimedia.org/wikipedia/commons/5/54/RWS_Tarot_00_Fool.jpg';
-        img.classList.remove('reversed');
-        title.textContent = 'Click to Reveal';
-        desc.textContent = '';
-        newCardEl.style.opacity = '0.6';
-
-        newCardEl.addEventListener('click', () => {
-          const data = state.drawnCards[idx];
-          if (!data.revealed) {
-            data.revealed = true;
-            img.src = data.image;
-            if (data.isReversed) {
-              img.classList.add('reversed');
-              title.textContent = `${data.name} (Reversed)`;
-            } else {
-              title.textContent = data.name;
-            }
-            desc.textContent = data.desc;
-            newCardEl.style.opacity = '1';
-          }
+        cardEl.addEventListener('click', () => {
+          selectSingleCard(idx);
         });
       });
+    }
+
+    function selectSingleCard(selectedIdx) {
+      const selectedData = state.drawnCards[selectedIdx];
+
+      // Hide all unselected cards
+      [0, 1, 2].forEach(idx => {
+        const cardEl = document.getElementById(`card-${idx}`);
+        if (idx !== selectedIdx) {
+          cardEl.classList.add('hidden');
+        } else {
+          // Reveal the picked card
+          cardEl.innerHTML = `
+            <img class="card-img ${selectedData.isReversed ? 'reversed' : ''}" src="${selectedData.image}" alt="${selectedData.name}">
+            <h4 class="card-title">${selectedData.name} ${selectedData.isReversed ? '(Reversed)' : ''}</h4>
+            <p class="card-desc">${selectedData.desc}</p>
+          `;
+        }
+      });
+
+      readingTitle.textContent = "Your Chosen Guidance";
+      readingExplanation.textContent = `Here is your drawn message for ${state.focus} (${state.intention}).`;
     }
   </script>
 </body>
