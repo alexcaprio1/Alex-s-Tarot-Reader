@@ -146,9 +146,16 @@
     }
 
     #reading-section h2 {
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       font-size: 1.2rem;
       letter-spacing: 1px;
+    }
+
+    .example-line {
+      color: #8a8a93;
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+      font-style: italic;
     }
 
     .cards-container {
@@ -252,19 +259,21 @@
     <!-- READING RESULTS -->
     <section id="reading-section" class="hidden">
       <h2>Your 3-Card Reading</h2>
+      <p id="example-line" class="example-line"></p>
+      
       <div class="cards-container">
         <div class="card" id="card-0">
-          <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/RWS_Tarot_00_Fool.jpg" alt="Card Back">
+          <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Rider-Waite_Tarot_Deck_Back.png" alt="Card Back">
           <h4 class="card-title">Card 1</h4>
           <p class="card-desc"></p>
         </div>
         <div class="card" id="card-1">
-          <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/RWS_Tarot_00_Fool.jpg" alt="Card Back">
+          <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Rider-Waite_Tarot_Deck_Back.png" alt="Card Back">
           <h4 class="card-title">Card 2</h4>
           <p class="card-desc"></p>
         </div>
         <div class="card" id="card-2">
-          <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/RWS_Tarot_00_Fool.jpg" alt="Card Back">
+          <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Rider-Waite_Tarot_Deck_Back.png" alt="Card Back">
           <h4 class="card-title">Card 3</h4>
           <p class="card-desc"></p>
         </div>
@@ -298,6 +307,8 @@
       { name: "The World", image: "https://upload.wikimedia.org/wikipedia/commons/ff/ff/RWS_Tarot_21_World.jpg", desc: "Completion, integration, accomplishment, travel." }
     ];
 
+    const cardBackUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e0/Rider-Waite_Tarot_Deck_Back.png";
+
     const state = { focus: null, intention: null, drawnCards: [] };
 
     const optionBtns = document.querySelectorAll('.option-btn');
@@ -306,6 +317,7 @@
     const chargeInstruction = document.getElementById('charge-instruction');
     const circle = document.querySelector('.progress-ring-circle');
     const readingSection = document.getElementById('reading-section');
+    const exampleLine = document.getElementById('example-line');
 
     const radius = circle.r.baseVal.value;
     const circumference = 2 * Math.PI * radius;
@@ -388,6 +400,9 @@
         isReversed: Math.random() < 0.3
       }));
 
+      // Set dynamic context guidance line
+      exampleLine.textContent = `Focusing on ${state.focus} to reveal guidance for ${state.intention}. Pick a card below.`;
+
       [0, 1, 2].forEach(idx => {
         const cardEl = document.getElementById(`card-${idx}`);
         cardEl.classList.remove('hidden');
@@ -396,8 +411,7 @@
         const title = cardEl.querySelector('.card-title');
         const desc = cardEl.querySelector('.card-desc');
 
-        // Card Back image URL placeholder
-        img.src = 'https://upload.wikimedia.org/wikipedia/commons/5/54/RWS_Tarot_00_Fool.jpg';
+        img.src = cardBackUrl;
         img.classList.remove('reversed');
         title.textContent = `Card ${idx + 1}`;
         desc.textContent = '';
@@ -413,6 +427,8 @@
 
     function selectCard(selectedIdx) {
       const selectedData = state.drawnCards[selectedIdx];
+
+      exampleLine.textContent = `Your reading for ${state.focus} (${state.intention}):`;
 
       [0, 1, 2].forEach(idx => {
         const cardEl = document.getElementById(`card-${idx}`);
