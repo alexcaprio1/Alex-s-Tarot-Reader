@@ -1,5 +1,5 @@
 // ==========================================
-// 1. TAROT DECK ARRAY (Local Images Path)
+// 1. TAROT DECK ARRAY
 // ==========================================
 const deck = [
   { name: "0. The Fool", image: "./Tarot Images/RWS_Tarot_00_Fool.jpg", upright: "New beginnings, innocence, spontaneity.", reversed: "Recklessness, risk-taking, inconsideration." },
@@ -26,128 +26,131 @@ const deck = [
   { name: "XXI. The World", image: "./Tarot Images/RWS_Tarot_21_World.jpg", upright: "Completion, integration, accomplishment, travel.", reversed: "Seeking personal closure, short-cuts, delays." }
 ];
 
-// App State
+// ==========================================
+// 2. DOM ELEMENTS & STATE
+// ==========================================
 let selectedFocus = null;
 let selectedIntention = null;
-let drawnCards = [];
 
-// DOM Elements
+const optionBtns = document.querySelectorAll('.option-btn');
 const chargeWrapper = document.getElementById('charge-wrapper');
-const dialsContainer = document.getElementById('dials-container');
-const cardsContainer = document.getElementById('cards-container');
-const cardDisplay = document.getElementById('card-display');
-const instruction = document.getElementById('instruction');
+const chargeBtn = document.getElementById('charge-btn');
+const progressRing = document.querySelector('.progress-ring-circle');
+
+// Progress ring calculations
+const radius = progressRing ? progressRing.r.baseVal.value : 0;
+const circumference = 2 * Math.PI * radius;
+
+if (progressRing) {
+  progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
+  progressRing.style.strokeDashoffset = circumference;
+}
 
 // ==========================================
-// 2. DIAL SELECTION LOGIC
+// 3. OPTION SELECTION LOGIC
 // ==========================================
-document.querySelectorAll('.option-btn').forEach(button => {
-  button.addEventListener('click', (e) => {
-    const type = e.target.dataset.type;
-    const value = e.target.dataset.value;
+optionBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const group = btn.dataset.group; // 'focus' or 'intention'
 
-    // Highlight selected button in group
-    const parentGroup = e.target.closest('.dial-group');
-    parentGroup.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
-    e.target.classList.add('active');
+    // Unselect other buttons in the same group
+    document.querySelectorAll(`.option-btn[data-group="${group}"]`).forEach(b => {
+      b.classList.remove('selected', 'active');
+    });
 
-    // Save selection
-    if (type === 'focus') selectedFocus = value;
-    if (type === 'intention') selectedIntention = value;
+    // Mark clicked button as active
+    btn.classList.add('selected', 'active');
 
-    // Check if both selections are made, then reveal Hold button
+    // Save state
+    if (group === 'focus') {
+      selectedFocus = btn.innerText;
+    } else if (group === 'intention') {
+      selectedIntention = btn.innerText;
+    }
+
+    // Reveal charge button if both are selected
     if (selectedFocus && selectedIntention) {
-      chargeWrapper.classList.remove('hidden');
-      instruction.textContent = "Press and hold to charge your reading.";
+      if (chargeWrapper) chargeWrapper.classList.remove('hidden');
     }
   });
 });
 
 // ==========================================
-// 3. HOLD-TO-CHARGE MECHANICS (SVG RING)
+// 4. HOLD TO CHARGE LOGIC
 // ==========================================
-const chargeBtn = document.getElementById('charge-btn');
-const progressCircle = document.querySelector('.progress-ring__circle');
-let chargeTimer = null;
+let holdTimer = null;
 let progress = 0;
+const holdDuration = 2000; // 2 seconds
+const intervalTime = 20;
 
-function startCharge() {
+function setProgress(percent) {
+  if (!progressRing) return;
+  const offset = circumference - (percent / 100) * circumference;
+  progressRing.style.strokeDashoffset = offset;
+}
+
+function startCharging() {
   progress = 0;
-  if (progressCircle) progressCircle.style.strokeDashoffset = '0';
-  
-  chargeTimer = setInterval(() => {
-    progress += 5;
+  holdTimer = setInterval(() => {
+    progress += (intervalTime / holdDuration) * 100;
     if (progress >= 100) {
-      clearInterval(chargeTimer);
-      completeCharge();
+      progress = 100;
+      setProgress(100);
+      clearInterval(holdTimer);
+      revealCards();
+    } else {
+      setProgress(progress);
     }
-  }, 100);
+  }, intervalTime);
 }
 
-function stopCharge() {
-  clearInterval(chargeTimer);
+function stopCharging() {
+  clearInterval(holdTimer);
   progress = 0;
-  if (progressCircle) progressCircle.style.strokeDashoffset = '400';
-}
-
-function completeCharge() {
-  dialsContainer.classList.add('hidden');
-  chargeWrapper.classList.add('hidden');
-  cardsContainer.classList.remove('hidden');
-  instruction.textContent = "Select a card to reveal your reading.";
-  
-  // Pick 3 unique random cards
-  const shuffled = [...deck].sort(() => 0.5 - Math.random());
-  drawnCards = shuffled.slice(0, 3);
+  setProgress(0);
 }
 
 if (chargeBtn) {
-  chargeBtn.addEventListener('mousedown', startCharge);
-  chargeBtn.addEventListener('mouseup', stopCharge);
-  chargeBtn.addEventListener('mouseleave', stopCharge);
-  chargeBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startCharge(); });
-  chargeBtn.addEventListener('touchend', stopCharge);
+  // Mouse events
+  chargeBtn.addEventListener('mousedown', startCharging);
+  chargeBtn.addEventListener('mouseup', stopCharging);
+  chargeBtn.addEventListener('mouseleave', stopCharging);
+
+  // Touch events (for mobile)
+  chargeBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startCharging(); });
+  chargeBtn.addEventListener('touchend', stopCharging);
 }
 
 // ==========================================
-// 4. CARD REVEAL & DISPLAY
+// 5. REVEAL CARDS FUNCTION
 // ==========================================
-document.querySelectorAll('.card-back').forEach(cardElem => {
-  cardElem.addEventListener('click', (e) => {
-    const cardIndex = e.target.dataset.cardIndex;
-    const selectedCard = drawnCards[cardIndex];
-    const isReversed = Math.random() < 0.5;
+function revealCards() {
+  const readingSection = document.getElementById('reading-section');
+  if (readingSection) readingSection.classList.remove('hidden');
 
-    // Display selected reading
-    cardsContainer.classList.add('hidden');
-    cardDisplay.classList.remove('hidden');
+  // Shuffle deck and pick 3 cards
+  const shuffled = [...deck].sort(() => 0.5 - Math.random());
+  const selectedCards = shuffled.slice(0, 3);
 
-    const meaning = isReversed ? selectedCard.reversed : selectedCard.upright;
-    const orientationText = isReversed ? "Reversed" : "Upright";
+  const cardElements = document.querySelectorAll('.card');
+  cardElements.forEach((cardEl, index) => {
+    const cardData = selectedCards[index];
+    const isReversed = Math.random() < 0.3; // 30% chance reversed
 
-    cardDisplay.innerHTML = `
-      <div class="reading-result">
-        <h2>${selectedCard.name} (${orientationText})</h2>
-        <img src="${selectedCard.image}" alt="${selectedCard.name}" class="${isReversed ? 'reversed' : ''}">
-        <p><strong>Focus:</strong> ${selectedFocus} | <strong>Intention:</strong> ${selectedIntention}</p>
-        <p class="meaning-text">${meaning}</p>
-        <button id="reset-btn" class="option-btn">Read Again</button>
-      </div>
-    `;
+    const imgEl = cardEl.querySelector('img');
+    const titleEl = cardEl.querySelector('.card-title');
+    const descEl = cardEl.querySelector('.card-desc');
 
-    document.getElementById('reset-btn').addEventListener('click', resetApp);
+    if (imgEl) {
+      imgEl.src = cardData.image;
+      imgEl.alt = cardData.name;
+      if (isReversed) imgEl.classList.add('reversed');
+    }
+    if (titleEl) {
+      titleEl.innerText = `${cardData.name} ${isReversed ? '(Reversed)' : ''}`;
+    }
+    if (descEl) {
+      descEl.innerText = isReversed ? cardData.reversed : cardData.upright;
+    }
   });
-});
-
-function resetApp() {
-  selectedFocus = null;
-  selectedIntention = null;
-  drawnCards = [];
-
-  document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
-  cardDisplay.classList.add('hidden');
-  cardsContainer.classList.add('hidden');
-  chargeWrapper.classList.add('hidden');
-  dialsContainer.classList.remove('hidden');
-  instruction.textContent = "Calibrate your focus and intention.";
 }
