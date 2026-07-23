@@ -2,49 +2,146 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scientific Tarot | Diagnostic System</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-
   <div class="app-container">
-    <h1>Tarot Card Reader</h1>
-    <p id="instruction">Calibrate your focus and intention before charging the deck.</p>
+    <header class="app-header">
+      <div class="system-badge">SYSTEM // V2.4</div>
+      <h1>SCIENTIFIC TAROT</h1>
+      <p class="subtitle">Minimalist Archetype Diagnostic & Pattern Analysis</p>
+    </header>
 
-    <!-- Dial 1: Focus Area -->
-    <div id="dial-focus" class="dial-group">
-      <label class="dial-label">1. Focus Area</label>
-      <div class="options-grid">
-        <button class="option-btn" data-type="focus" data-value="Career">💼 Career</button>
-        <button class="option-btn" data-type="focus" data-value="Relationships">🤍 Relationships</button>
-        <button class="option-btn" data-type="focus" data-value="Personal Growth">🌿 Personal Growth</button>
-        <button class="option-btn" data-type="focus" data-value="Energy & Drive">⚡ Energy & Drive</button>
-      </div>
-    </div>
+    <main>
+      <!-- Controls / Configuration Panel -->
+      <section class="config-panel">
+        <div class="control-group">
+          <label for="focus-area">Focus Vector</label>
+          <select id="focus-area">
+            <option value="System & Architecture">System & Architecture (Career / Projects)</option>
+            <option value="Signal & Noise">Signal & Noise (Mental Clarity / Focus)</option>
+            <option value="Resonance Field">Resonance Field (Relationships / Connections)</option>
+            <option value="Future Trajectory">Future Trajectory (Goals & Expansion)</option>
+          </select>
+        </div>
 
-    <!-- Dial 2: Intention Stance -->
-    <div id="dial-intention" class="dial-group">
-      <label class="dial-label">2. Intention Stance</label>
-      <div class="options-grid">
-        <button class="option-btn" data-type="intention" data-value="Overcoming a Block">🧱 Overcoming a Block</button>
-        <button class="option-btn" data-type="intention" data-value="Seeking Clarity">🔍 Seeking Clarity</button>
-        <button class="option-btn" data-type="intention" data-value="Next Move">🚀 Next Move</button>
-      </div>
-    </div>
-    
-    <!-- The Charge Button (Disabled initially) -->
-    <button id="charge-btn" class="disabled-btn" disabled>Select Focus & Intention to Unlock</button>
+        <div class="control-group">
+          <label for="intention-stance">Intention Stance</label>
+          <select id="intention-stance">
+            <option value="Root Diagnostic">Root Diagnostic (Identify Core Drivers)</option>
+            <option value="Systemic Optimization">Systemic Optimization (Actionable Steps)</option>
+            <option value="Neutral Observation">Neutral Observation (Perspective Shift)</option>
+          </select>
+        </div>
+      </section>
 
-    <!-- Container for the 3 face-down cards -->
-    <div id="cards-container" class="hidden">
-      <div class="card-back" data-card-index="0">?</div>
-      <div class="card-back" data-card-index="1">?</div>
-      <div class="card-back" data-card-index="2">?</div>
-    </div>
+      <!-- Charging / Calibration Area -->
+      <section class="charge-section">
+        <div class="ring-container">
+          <svg class="progress-ring" width="140" height="140">
+            <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.08)" stroke-width="3" fill="transparent" r="60" cx="70" cy="70"/>
+            <circle class="progress-ring__circle" id="progress-circle" stroke="#d4af37" stroke-width="3" fill="transparent" r="60" cx="70" cy="70"/>
+          </svg>
+          <button id="charge-btn" class="charge-btn">
+            <span class="btn-icon">✦</span>
+            <span class="btn-text">INITIALIZE READING</span>
+          </button>
+        </div>
+        <div id="charge-status" class="charge-status">Calibrating matrix... Press to begin</div>
+      </section>
 
-    <!-- Display area for the final drawn card -->
-    <div id="card-display" class="hidden"></div>
+      <!-- Card Spread Area -->
+      <section class="spread-section hidden" id="spread-section">
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <div class="card-container" id="card-0">
+            <div class="card-inner">
+              <div class="card-face card-back">
+                <div class="star-map-overlay"></div>
+                <div class="card-label-back">POSITION 01</div>
+              </div>
+              <div class="card-face card-front">
+                <div class="card-position-tag">01 // ANTECEDENT</div>
+                <div class="card-title" id="card-0-title">--</div>
+                <div class="card-orient" id="card-0-orient">--</div>
+                <div class="card-keywords" id="card-0-keywords">--</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card-container" id="card-1">
+            <div class="card-inner">
+              <div class="card-face card-back">
+                <div class="star-map-overlay"></div>
+                <div class="card-label-back">POSITION 02</div>
+              </div>
+              <div class="card-face card-front">
+                <div class="card-position-tag">02 // CURRENT STATE</div>
+                <div class="card-title" id="card-1-title">--</div>
+                <div class="card-orient" id="card-1-orient">--</div>
+                <div class="card-keywords" id="card-1-keywords">--</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card-container" id="card-2">
+            <div class="card-inner">
+              <div class="card-face card-back">
+                <div class="star-map-overlay"></div>
+                <div class="card-label-back">POSITION 03</div>
+              </div>
+              <div class="card-face card-front">
+                <div class="card-position-tag">03 // PROJECTION</div>
+                <div class="card-title" id="card-2-title">--</div>
+                <div class="card-orient" id="card-2-orient">--</div>
+                <div class="card-keywords" id="card-2-keywords">--</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Deep Diagnostic Synthesis Area -->
+      <section class="reading-output hidden" id="reading-output">
+        <div class="output-card">
+          <div class="output-header">
+            <span class="diagnostic-tag">DEEP DIAGNOSTIC ANALYSIS</span>
+            <h2 id="synthesis-title">System Synthesis</h2>
+          </div>
+          <hr class="divider">
+          <div class="output-body">
+            <div class="diagnostic-block">
+              <h3>System Overview</h3>
+              <p id="diag-overview">--</p>
+            </div>
+            <div class="diagnostic-block">
+              <h3>Primary Friction / Catalyst</h3>
+              <p id="diag-catalyst">--</p>
+            </div>
+            <div class="diagnostic-block">
+              <h3>Actionable Directive</h3>
+              <p id="diag-directive">--</p>
+            </div>
+          </div>
+          <div class="output-footer">
+            <button id="reset-btn" class="secondary-btn">RESET DIAGNOSTIC</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>Scientific Tarot System &copy; 2026 • Serene Museum Architecture</p>
+    </footer>
   </div>
 
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
