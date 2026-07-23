@@ -1,166 +1,406 @@
+/* --- Root Variables & Modern Museum Theme --- */
+:root {
+  --bg-color: #0b0c10;
+  --panel-bg: #12141c;
+  --card-bg: #181b26;
+  --text-main: #e2e8f0;
+  --text-muted: #8a94a6;
+  --accent-gold: #d4af37;
+  --accent-cyan: #76c7c0;
+  --border-color: rgba(212, 175, 55, 0.2);
+  --font-serif: 'Cinzel', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --transition-speed: 0.4s;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+  line-height: 1.6;
+  background-image: 
+    radial-gradient(circle at 50% 10%, rgba(118, 199, 192, 0.04) 0%, transparent 60%),
+    radial-gradient(circle at 50% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+}
+
+.app-container {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* --- Header --- */
+.app-header {
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+}
+
+.system-badge {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.app-header h1 {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+  letter-spacing: 4px;
+  color: #ffffff;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  margin-top: 0.3rem;
+}
+
+/* --- Controls Panel --- */
+.config-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  background: var(--panel-bg);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-group label {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+select {
+  background: #0b0c10;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--transition-speed);
+}
+
+select:focus {
+  border-color: var(--accent-gold);
+}
+
+/* --- Charging Ritual Section --- */
+.charge-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.ring-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+  stroke-dasharray: 377;
+  stroke-dashoffset: 377;
+  transition: stroke-dashoffset 0.1s linear;
+}
+
+.charge-btn {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  z-index: 2;
+}
+
+.charge-btn:hover {
+  border-color: var(--accent-gold);
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+  color: var(--accent-gold);
+}
+
+.btn-text {
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.charge-status {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  height: 1.5rem;
+}
+
+/* --- Card Spread Grid & 3D Flips --- */
+.spread-section {
+  transition: opacity 0.6s ease;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+.card-container {
+  width: 220px;
+  height: 340px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.card-container.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.2rem;
+}
+
+/* Geometric Star Map Card Back */
+.card-back {
+  background: radial-gradient(circle at center, #181b26 0%, #0d0f17 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.star-map-overlay {
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 4px;
+  background-image: 
+    radial-gradient(circle at 50% 50%, transparent 20%, rgba(212, 175, 55, 0.08) 21%, transparent 22%),
+    radial-gradient(circle at 50% 50%, transparent 40%, rgba(118, 199, 192, 0.08) 41%, transparent 42%),
+    linear-gradient(0deg, transparent 49%, rgba(212, 175, 55, 0.15) 50%, transparent 51%),
+    linear-gradient(90deg, transparent 49%, rgba(212, 175, 55, 0.15) 50%, transparent 51%);
+}
+
+.card-label-back {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--accent-gold);
+  z-index: 2;
+  background: rgba(11, 12, 16, 0.8);
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+  border: 1px solid var(--border-color);
+}
+
+/* Card Front Face */
+.card-front {
+  background: var(--card-bg);
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.card-position-tag {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--accent-cyan);
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: #ffffff;
+  letter-spacing: 1px;
+  margin: 0.5rem 0;
+}
+
+.card-orient {
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+}
+
+.card-orient.upright {
+  color: var(--accent-gold);
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.card-orient.reversed {
+  color: #e57373;
+  background: rgba(229, 115, 115, 0.1);
+}
+
+.card-keywords {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* --- Reading Output Area --- */
+.reading-output {
+  margin-top: 1rem;
+}
+
+.output-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.output-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.diagnostic-tag {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--accent-gold);
+}
+
+.output-header h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: var(--border-color);
+  margin: 1.5rem 0;
+}
+
+.output-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.diagnostic-block h3 {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  margin-bottom: 0.4rem;
+}
+
+.diagnostic-block p {
+  color: var(--text-main);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.output-footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 0.6rem 1.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.secondary-btn:hover {
+  color: var(--text-main);
+  border-color: var(--accent-gold);
+}
+
+/* --- Utilities --- */
 .hidden {
   display: none !important;
 }
 
-body {
-  font-family: 'Georgia', serif;
-  background-color: #1a1a2e;
-  color: #e0e0e0;
+.app-footer {
   text-align: center;
-  padding: 30px 15px;
-}
-
-.app-container {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Dial Selectors Styling */
-.dial-group {
-  margin-bottom: 20px;
-  background-color: #16213e;
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid #2b2b48;
-}
-
-.dial-label {
-  display: block;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #d4af37;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.options-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-}
-
-.option-btn {
-  background-color: #1a1a2e;
-  color: #c0c0c0;
-  border: 1px solid #444;
-  padding: 8px 14px;
-  font-size: 13px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.option-btn:hover {
-  border-color: #d4af37;
-  color: #ffffff;
-}
-
-.option-btn.selected {
-  background-color: #d4af37;
-  color: #1a1a2e;
-  border-color: #d4af37;
-  font-weight: bold;
-}
-
-/* Primary Action Button */
-#charge-btn {
-  background-color: #d4af37;
-  color: #1a1a2e;
-  border: none;
-  padding: 14px 28px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s, opacity 0.2s;
-  margin-top: 10px;
-}
-
-#charge-btn.disabled-btn {
-  background-color: #44445c;
-  color: #888899;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-#charge-btn:not(.disabled-btn):hover {
-  background-color: #f1c40f;
-  transform: scale(1.05);
-}
-
-/* Layout for the 3 face-down cards */
-#cards-container {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin: 25px 0;
-}
-
-.card-back {
-  width: 90px;
-  height: 150px;
-  background-color: #2b2b48;
-  color: #d4af37;
-  font-size: 28px;
-  font-weight: bold;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: 2px solid #d4af37;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card-back:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-}
-
-/* Reading Output Display */
-#card-display {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #16213e;
-  border: 1px solid #d4af37;
-  border-radius: 12px;
-  display: inline-block;
-  max-width: 360px;
-}
-
-.tarot-img {
-  width: 170px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  margin: 15px 0;
-  transition: transform 0.3s ease;
-}
-
-.tarot-img.reversed {
-  transform: rotate(180deg);
-}
-
-.card-status {
-  color: #d4af37;
-  font-style: italic;
-  font-size: 14px;
-  margin-top: -5px;
-}
-
-.reading-meta {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #8888aa;
-  margin-bottom: 10px;
-}
-
-.reading-text {
-  text-align: left;
-  line-height: 1.5;
-  font-size: 14px;
-  color: #e0e0e0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2rem;
 }
