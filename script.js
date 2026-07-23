@@ -1,240 +1,157 @@
-// 1. Cleaned Deck Data (Noun-based vibes for flawless template insertion)
-const deck = [
-  { 
-    name: "0. The Fool", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg", 
-    upright: { vibe: "taking a leap of faith", example: "Saying yes to an opportunity before feeling 100% ready." },
-    reversed: { vibe: "hesitation or rushing in blindly", example: "Overthinking a choice until you miss the chance entirely." }
-  },
-  { 
-    name: "I. The Magician", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg", 
-    upright: { vibe: "using the tools you already have", example: "Realizing you already have the skills to pull this off." },
-    reversed: { vibe: "self-doubt or wasted energy", example: "Doubting your abilities despite having all the facts." }
-  },
-  { 
-    name: "II. The High Priestess", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg", 
-    upright: { vibe: "trusting your inner gut feeling", example: "Knowing a decision is right before you can even explain why." },
-    reversed: { vibe: "ignoring your instincts", example: "Talking yourself out of a strong gut feeling." }
-  },
-  { 
-    name: "III. The Empress", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg", 
-    upright: { vibe: "patience and self-care", example: "Nurturing an idea step-by-step instead of forcing it." },
-    reversed: { vibe: "burnout from over-giving", example: "Feeling drained from doing all the heavy lifting for others." }
-  },
-  { 
-    name: "IV. The Emperor", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg", 
-    upright: { vibe: "clear boundaries and structure", example: "Saying a firm 'no' to protect your time and energy." },
-    reversed: { vibe: "rigidity or over-control", example: "Trying to micro-manage details you should delegate." }
-  },
-  { 
-    name: "V. The Hierophant", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg", 
-    upright: { vibe: "proven methods and trusted advice", example: "Following a tried-and-true playbook that works." },
-    reversed: { vibe: "outdated rules holding you back", example: "Breaking away from 'how it's always been done.'" }
-  },
-  { 
-    name: "VI. The Lovers", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg", 
-    upright: { vibe: "aligning with your core values", example: "Making a choice based on what actually matters to you." },
-    reversed: { vibe: "misaligned priorities", example: "Staying in a situation that clashes with your values." }
-  },
-  { 
-    name: "VII. The Chariot", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg", 
-    upright: { vibe: "focused determination and momentum", example: "Powering through distractions to finish a goal." },
-    reversed: { vibe: "scattered effort or dead ends", example: "Spinning your wheels on something hitting a dead end." }
-  },
-  { 
-    name: "VIII. Strength", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg", 
-    upright: { vibe: "quiet patience and emotional composure", example: "Keeping your cool during a tense moment." },
-    reversed: { vibe: "temporary self-doubt", example: "Letting stress convince you that you can't handle it." }
-  },
-  { 
-    name: "IX. The Hermit", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg", 
-    upright: { vibe: "stepping back to gain clarity", example: "Taking quiet time away from others to clear your head." },
-    reversed: { vibe: "isolation or overthinking", example: "Hiding away instead of facing reality." }
-  },
-  { 
-    name: "X. Wheel of Fortune", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg", 
-    upright: { vibe: "embracing a natural momentum shift", example: "A sudden lucky break opening a new door." },
-    reversed: { vibe: "resisting temporary delays", example: "Stressing over unexpected timing out of your control." }
-  },
-  { 
-    name: "XI. Justice", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg", 
-    upright: { vibe: "honesty and clear objectivity", example: "Having a frank conversation where both sides own their part." },
-    reversed: { vibe: "avoiding responsibility", example: "Blaming circumstances instead of owning a mistake." }
-  },
-  { 
-    name: "XII. The Hanged Man", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg", 
-    upright: { vibe: "pausing to shift your perspective", example: "Stepping away from a problem so the answer comes naturally." },
-    reversed: { vibe: "forcing action too soon", example: "Pushing for a result before the timing is right." }
-  },
-  { 
-    name: "XIII. Death", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg", 
-    upright: { vibe: "closing an expired chapter", example: "Ending an old habit that no longer serves you." },
-    reversed: { vibe: "holding onto what's comfortable", example: "Clinging to an old routine long after outgrowing it." }
-  },
-  { 
-    name: "XIV. Temperance", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg", 
-    upright: { vibe: "finding a healthy middle ground", example: "Balancing hard work with real downtime." },
-    reversed: { vibe: "extreme highs and lows", example: "Going 100 mph for days until you completely crash." }
-  },
-  { 
-    name: "XV. The Devil", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg", 
-    upright: { vibe: "recognizing self-imposed loops", example: "Realizing you're staying in a comfort zone out of habit." },
-    reversed: { vibe: "breaking a pattern holding you back", example: "Finally cutting off a habit that kept you stuck." }
-  },
-  { 
-    name: "XVI. The Tower", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg", 
-    upright: { vibe: "a radical shift in perspective", example: "Learning a truth that instantly shifts your plans." },
-    reversed: { vibe: "avoiding an inevitable truth", example: "Ignoring a clear issue hoping it fixes itself." }
-  },
-  { 
-    name: "XVII. The Star", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg", 
-    upright: { vibe: "renewed hope and long-term vision", example: "Getting your spark back after a tough stretch." },
-    reversed: { vibe: "short-term discouragement", example: "Focusing so much on a setback that you lose the big picture." }
-  },
-  { 
-    name: "XVIII. The Moon", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg", 
-    upright: { vibe: "navigating uncertainty with instinct", example: "Moving carefully when you don't have the full story." },
-    reversed: { vibe: "clearing up lingering confusion", example: "Finally seeing through the noise on a tricky issue." }
-  },
-  { 
-    name: "XIX. The Sun", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg", 
-    upright: { vibe: "unfiltered optimism and clear progress", example: "A moment where everything just flows effortlessly." },
-    reversed: { vibe: "overthinking good moments", example: "Getting a win but immediately stressing over the next thing." }
-  },
-  { 
-    name: "XX. Judgement", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg", 
-    upright: { vibe: "leveling up from past lessons", example: "Learning from a past mistake and making a mature upgrade." },
-    reversed: { vibe: "harsh self-criticism", example: "Second-guessing a choice you already made." }
-  },
-  { 
-    name: "XXI. The World", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/ff/f4/RWS_Tarot_21_World.jpg", 
-    upright: { vibe: "full-circle completion", example: "Finishing a long-term goal with complete satisfaction." },
-    reversed: { vibe: "unfinished loose ends", example: "Being 95% done with something but dragging your feet on the end." }
-  }
+// --- Major Arcana Dataset ---
+const TAROT_DECK = [
+  { id: 0, name: "00 // THE FOOL", upright: "New Beginnings, Potential, Pure Risk", reversed: "Hesitation, Recklessness, Naivety" },
+  { id: 1, name: "01 // THE MAGICIAN", upright: "Agency, Resource Alignment, Focused Will", reversed: "Unrealized Talent, Misdirection, Inertia" },
+  { id: 2, name: "02 // THE HIGH PRIESTESS", upright: "Intuition, Subconscious Signal, Pattern Recognition", reversed: "Suppressed Knowing, Noise, Surface Focus" },
+  { id: 3, name: "03 // THE EMPRESS", upright: "Generative Growth, Synthesis, Abundance", reversed: "Creative Block, System Drain, Stagnation" },
+  { id: 4, name: "04 // THE EMPEROR", upright: "Structural Control, Stability, Architecture", reversed: "Rigidity, Over-regulation, Friction" },
+  { id: 5, name: "05 // THE HIEROPHANT", upright: "Frameworks, Established Method, Knowledge Transmission", reversed: "Dogma, Outdated Protocols, Blind Conformity" },
+  { id: 6, name: "06 // THE LOVERS", upright: "Alignment, Value Selection, Mutual Resonance", reversed: "Misalignment, Conflicting Vectors, Imbalance" },
+  { id: 7, name: "07 // THE CHARIOT", upright: "Vector Momentum, Focused Drive, Convergence", reversed: "Loss of Direction, Mechanical Strain, Burnout" },
+  { id: 8, name: "08 // STRENGTH", upright: "Calibrated Control, Equilibrium, Resilience", reversed: "Internal Friction, Reactionary Drift, Exhaustion" },
+  { id: 9, name: "09 // THE HERMIT", upright: "Isolation Protocol, Deep Calibration, Internal Light", reversed: "Withdrawal Decay, Isolation Loop, Analysis Paralysis" },
+  { id: 10, name: "10 // WHEEL OF FORTUNE", upright: "Cyclic Shift, External Variables, Adaptation", reversed: "Resistance to Shift, Uncontrolled Variables, Drag" },
+  { id: 11, name: "11 // JUSTICE", upright: "Calibrated Reality, Truth, Cause & Effect", reversed: "Systemic Asymmetry, Biased Input, Rationalization" },
+  { id: 12, name: "12 // THE HANGED MAN", upright: "Perspective Inversion, Strategic Pause, Re-evaluation", reversed: "Fruitless Resistance, Delusional Delay, Inertia" },
+  { id: 13, name: "13 // DEATH", upright: "System Reset, Pruning, State Transformation", reversed: "Decay Resistance, Stagnant Legacy, Attachment" },
+  { id: 14, name: "14 // TEMPERANCE", upright: "Dynamic Modulation, Integration, Smooth Flow", reversed: "System Volatility, Boundary Dissolution, Turbulence" },
+  { id: 15, name: "15 // THE DEVIL", upright: "Systemic Entanglement, Sub-optimal Traps, Shadow Drives", reversed: "Breaking Dependencies, Detachment, Protocol Liberation" },
+  { id: 16, name: "16 // THE TOWER", upright: "Structural Rupture, Paradigm Shift, Reality Injection", reversed: "Averted Collapse, Fragile Patching, Imminent Disruption" },
+  { id: 17, name: "17 // THE STAR", upright: "Coherent Trajectory, Renewed Signal, Clarity", reversed: "Desynchronization, Loss of Signal, Hopelessness" },
+  { id: 18, name: "18 // THE MOON", upright: "Ambiguity, Distortion, Hidden Variables", reversed: "Illusion Dissolution, Signal Recovery, Unmasking" },
+  { id: 19, name: "19 // THE SUN", upright: "High Fidelity, Output Vitality, Illumination", reversed: "Obscured Clarity, Partial Burnout, Temporary Dimming" },
+  { id: 20, name: "20 // JUDGEMENT", upright: "Evaluative Synthesis, Final Integration, Rebirth", reversed: "Self-Critical Loops, Unresolved Audits, Hesitation" },
+  { id: 21, name: "21 // THE WORLD", upright: "System Completion, Total Synthesis, Equilibrium", reversed: "Incomplete Loops, Unresolved Margins, Near-Miss" }
 ];
 
-// 2. Dial Tracking
-let selectedFocus = null;
-let selectedIntention = null;
+// --- App State ---
+let drawnCards = [];
+let isCharging = false;
 
-const optionBtns = document.querySelectorAll(".option-btn");
-const chargeBtn = document.getElementById("charge-btn");
-const cardsContainer = document.getElementById("cards-container");
-const instruction = document.getElementById("instruction");
-const cardDisplay = document.getElementById("card-display");
-const cardBacks = document.querySelectorAll(".card-back");
-const dialFocusGroup = document.getElementById("dial-focus");
-const dialIntentionGroup = document.getElementById("dial-intention");
+// --- DOM Elements ---
+const chargeBtn = document.getElementById('charge-btn');
+const chargeStatus = document.getElementById('charge-status');
+const progressCircle = document.getElementById('progress-circle');
+const spreadSection = document.getElementById('spread-section');
+const readingOutput = document.getElementById('reading-output');
+const resetBtn = document.getElementById('reset-btn');
+const focusSelect = document.getElementById('focus-area');
+const stanceSelect = document.getElementById('intention-stance');
 
-let holdTimer;
+// Ring geometry calculation
+const RADIUS = 60;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-// Handle Option Selection
-optionBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const type = btn.getAttribute("data-type");
-    const value = btn.getAttribute("data-value");
-
-    document.querySelectorAll(`.option-btn[data-type="${type}"]`).forEach(b => b.classList.remove("selected"));
-    btn.classList.add("selected");
-
-    if (type === "focus") selectedFocus = value;
-    if (type === "intention") selectedIntention = value;
-
-    if (selectedFocus && selectedIntention) {
-      chargeBtn.classList.remove("disabled-btn");
-      chargeBtn.removeAttribute("disabled");
-      chargeBtn.innerText = "Hold to Charge Deck";
-      instruction.innerText = "Dials set. Press and hold to focus your energy into the deck.";
-    }
-  });
-});
-
-// 3. Hold-to-Charge Logic
-chargeBtn.addEventListener("mousedown", () => {
-  if (!selectedFocus || !selectedIntention) return;
-  instruction.innerText = "Charging deck with your energy... hold steady...";
-  
-  holdTimer = setTimeout(() => {
-    instruction.innerText = "Deck fully charged! Select the card you feel drawn to:";
-    chargeBtn.classList.add("hidden");
-    dialFocusGroup.classList.add("hidden");
-    dialIntentionGroup.classList.add("hidden");
-    cardsContainer.classList.remove("hidden");
-  }, 1500);
-});
-
-chargeBtn.addEventListener("mouseup", () => {
-  if (instruction.innerText.includes("Charging")) {
-    clearTimeout(holdTimer);
-    instruction.innerText = "Hold longer to focus your energy!";
-  }
-});
-
-// 4. Reading Generator (Clean, natural phrasing)
-function generateAccessibleReading(card, isReversed, focus, intention) {
-  const details = isReversed ? card.reversed : card.upright;
-
-  let takeaway = "";
-  if (intention === "Overcoming a Block") {
-    takeaway = `To unblock your **${focus}**, address **${details.vibe}**.`;
-  } else if (intention === "Seeking Clarity") {
-    takeaway = `Regarding your **${focus}**, pay attention to **${details.vibe}**.`;
-  } else if (intention === "Next Move") {
-    takeaway = `For your next step in **${focus}**, focus on **${details.vibe}**.`;
-  }
-
-  return {
-    takeaway: takeaway,
-    example: details.example
-  };
+// --- Initialization ---
+function init() {
+  chargeBtn.addEventListener('click', startChargingSequence);
+  resetBtn.addEventListener('click', resetApp);
 }
-// 5. Card Selection & Draw
-cardBacks.forEach((card) => {
-  card.addEventListener("click", () => {
-    const randomIndex = Math.floor(Math.random() * deck.length);
-    const drawnCard = deck[randomIndex];
-    const isReversed = Math.random() < 0.5;
 
-    cardsContainer.classList.add("hidden");
-    cardDisplay.classList.remove("hidden");
-    instruction.innerText = "Your Personal Reading:";
+// --- Charging & Calibration Sequence ---
+function startChargingSequence() {
+  if (isCharging) return;
+  isCharging = true;
+  chargeBtn.disabled = true;
 
-    const reading = generateAccessibleReading(drawnCard, isReversed, selectedFocus, selectedIntention);
+  // Reset display
+  spreadSection.classList.add('hidden');
+  readingOutput.classList.add('hidden');
+  resetCardsState();
 
-    cardDisplay.innerHTML = `
-      <div class="reading-meta">${selectedFocus} • ${selectedIntention}</div>
-      <h2>${drawnCard.name}</h2>
-      <p class="card-status">${isReversed ? "Reversed" : "Upright"}</p>
-      <img 
-        src="${drawnCard.image}" 
-        alt="${drawnCard.name}" 
-        class="tarot-img ${isReversed ? "reversed" : ""}"
-      />
-      <div class="reading-text">
-        <p class="reading-vibe"><strong>Focus:</strong> ${reading.takeaway.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
-        <p class="reading-example"><strong>Example:</strong> ${reading.example}</p>
-      </div>
-    `;
+  const states = [
+    { text: "Breathing in... Aligning vector matrix...", progress: 0.33 },
+    { text: "Exhaling... Filtering baseline signal...", progress: 0.66 },
+    { text: "Calibrating complete. Drawing archetypes...", progress: 1.0 }
+  ];
+
+  let step = 0;
+  
+  function runStep() {
+    if (step < states.length) {
+      chargeStatus.textContent = states[step].text;
+      const offset = CIRCUMFERENCE - (states[step].progress * CIRCUMFERENCE);
+      progressCircle.style.strokeDashoffset = offset;
+      step++;
+      setTimeout(runStep, 1000);
+    } else {
+      isCharging = false;
+      chargeBtn.disabled = false;
+      chargeStatus.textContent = "Calibration complete.";
+      drawSpread();
+    }
+  }
+
+  runStep();
+}
+
+// --- Card Drawing Logic ---
+function drawSpread() {
+  const shuffled = [...TAROT_DECK].sort(() => 0.5 - Math.random());
+  drawnCards = shuffled.slice(0, 3).map(card => ({
+    ...card,
+    isReversed: Math.random() < 0.5
+  }));
+
+  spreadSection.classList.remove('hidden');
+
+  drawnCards.forEach((card, idx) => {
+    const cardEl = document.getElementById(`card-${idx}`);
+    const titleEl = document.getElementById(`card-${idx}-title`);
+    const orientEl = document.getElementById(`card-${idx}-orient`);
+    const keywordsEl = document.getElementById(`card-${idx}-keywords`);
+
+    titleEl.textContent = card.name;
+    orientEl.textContent = card.isReversed ? "REVERSED" : "UPRIGHT";
+    orientEl.className = `card-orient ${card.isReversed ? 'reversed' : 'upright'}`;
+    keywordsEl.textContent = card.isReversed ? card.reversed : card.upright;
+
+    setTimeout(() => {
+      cardEl.classList.add('flipped');
+    }, 400 + (idx * 300));
   });
-});
+
+  setTimeout(() => {
+    generateDiagnosticSynthesis();
+    readingOutput.classList.remove('hidden');
+  }, 1600);
+}
+
+// --- Deep Diagnostic Synthesis ---
+function generateDiagnosticSynthesis() {
+  const focus = focusSelect.value;
+  const stance = stanceSelect.value;
+
+  const card1 = drawnCards[0];
+  const card2 = drawnCards[1];
+  const card3 = drawnCards[2];
+
+  document.getElementById('synthesis-title').textContent = `${focus} • ${stance}`;
+
+  document.getElementById('diag-overview').textContent = 
+    `Analyzing current state through the lens of ${stance.toLowerCase()}. The initial condition (${card1.name.split('//')[1].trim()} - ${card1.isReversed ? 'Reversed' : 'Upright'}) indicates an underlying operational pattern where ${card1.isReversed ? 'blocked momentum or unaligned variables' : 'primary energy and structural focus'} predominate your ${focus.toLowerCase()} vector.`;
+
+  document.getElementById('diag-catalyst').textContent = 
+    `The immediate friction point is signaled by ${card2.name.split('//')[1].trim()} (${card2.isReversed ? 'Reversed' : 'Upright'}). Rather than treating this as static noise, observe how it acts as a dynamic recalibration point within your system. Focus on ${card2.isReversed ? 'resolving internal entanglements before taking outward action' : 'leveraging current structural clarity to drive progress'}.`;
+
+  document.getElementById('diag-directive').textContent = 
+    `To align with your projected state (${card3.name.split('//')[1].trim()} - ${card3.isReversed ? 'Reversed' : 'Upright'}), your actionable directive is: ${card3.isReversed ? 'Release perfectionist friction and simplify the current architecture.' : 'Execute with deliberate intention and consolidate your energy across key priorities.'}`;
+}
+
+// --- Reset Functions ---
+function resetCardsState() {
+  for (let i = 0; i < 3; i++) {
+    const cardEl = document.getElementById(`card-${i}`);
+    cardEl.classList.remove('flipped');
+  }
+  progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
+}
+
+function resetApp() {
+  resetCardsState();
+  spreadSection.classList.add('hidden');
+  readingOutput.classList.add('hidden');
+  chargeStatus.textContent = "Calibrating matrix... Press to begin";
+}
+
+document.addEventListener('DOMContentLoaded', init);
