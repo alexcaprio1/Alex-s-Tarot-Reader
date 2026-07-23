@@ -3,59 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimalist Tarot Reader</title>
   <link rel="stylesheet" href="style.css">
-  <title>Minimalist Tarot</title>
 </head>
 <body>
 
-  <div class="app-container">
-    <header class="museum-header">
-      <h1>Tarot Reader</h1>
-      <p id="instruction">Calibrate your focus and intention.</p>
+  <div class="container">
+    <header>
+      <h1>Minimalist Tarot</h1>
+      <p>Select your focus and intention, then hold to charge your reading.</p>
     </header>
 
-    <!-- Dials -->
-    <div id="dials-container">
-      <div id="dial-focus" class="dial-group">
-        <label class="dial-label">1. Focus Area</label>
-        <div class="options-grid">
-          <button class="option-btn" data-type="focus" data-value="Career">Career</button>
-          <button class="option-btn" data-type="focus" data-value="Relationships">Relationships</button>
-          <button class="option-btn" data-type="focus" data-value="Personal Growth">Personal Growth</button>
-          <button class="option-btn" data-type="focus" data-value="Energy & Drive">Energy & Drive</button>
-        </div>
+    <!-- FOCUS AREA -->
+    <section class="options-section">
+      <h3>1. Select Focus Area</h3>
+      <div class="options-grid">
+        <button class="option-btn" data-group="focus">Career</button>
+        <button class="option-btn" data-group="focus">Relationships</button>
+        <button class="option-btn" data-group="focus">Personal Growth</button>
       </div>
+    </section>
 
-      <div id="dial-intention" class="dial-group">
-        <label class="dial-label">2. Intention Stance</label>
-        <div class="options-grid">
-          <button class="option-btn" data-type="intention" data-value="Overcoming a Block">Overcoming a Block</button>
-          <button class="option-btn" data-type="intention" data-value="Seeking Clarity">Seeking Clarity</button>
-          <button class="option-btn" data-type="intention" data-value="Next Move">Next Move</button>
-        </div>
+    <!-- INTENTION STANCE -->
+    <section class="options-section">
+      <h3>2. Select Intention Stance</h3>
+      <div class="options-grid">
+        <button class="option-btn" data-group="intention">Seeking Clarity</button>
+        <button class="option-btn" data-group="intention">Action-Oriented</button>
+        <button class="option-btn" data-group="intention">Reflection</button>
       </div>
-    </div>
+    </section>
 
-    <!-- Interactive Charging Module -->
+    <!-- CHARGE / HOLD BUTTON -->
     <div id="charge-wrapper" class="hidden">
-      <svg class="progress-ring" width="140" height="140">
-        <circle class="progress-ring__track" stroke="#222" stroke-width="4" fill="transparent" r="64" cx="70" cy="70"/>
-        <circle class="progress-ring__circle" stroke="#d4af37" stroke-width="4" fill="transparent" r="64" cx="70" cy="70"/>
-      </svg>
-      <button id="charge-btn">HOLD</button>
-    </div>
-    
-    <!-- 3 Face-Down Cards -->
-    <div id="cards-container" class="hidden">
-      <div class="card-back" data-card-index="0"></div>
-      <div class="card-back" data-card-index="1"></div>
-      <div class="card-back" data-card-index="2"></div>
+      <div class="progress-ring-container">
+        <svg class="progress-ring" width="120" height="120">
+          <circle class="progress-ring-circle" stroke="white" stroke-width="4" fill="transparent" r="52" cx="60" cy="60"/>
+        </svg>
+        <button id="charge-btn">HOLD</button>
+      </div>
     </div>
 
-    <!-- Reading Display -->
-    <div id="card-display" class="hidden"></div>
+    <!-- READING RESULTS -->
+    <section id="reading-section" class="hidden">
+      <h2>Your 3-Card Reading</h2>
+      <div class="cards-container">
+        <div class="card">
+          <img src="" alt="Card 1">
+          <h4 class="card-title"></h4>
+          <p class="card-desc"></p>
+        </div>
+        <div class="card">
+          <img src="" alt="Card 2">
+          <h4 class="card-title"></h4>
+          <p class="card-desc"></p>
+        </div>
+        <div class="card">
+          <img src="" alt="Card 3">
+          <h4 class="card-title"></h4>
+          <p class="card-desc"></p>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
