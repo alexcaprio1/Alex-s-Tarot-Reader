@@ -3,75 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scientific Tarot</title>
   <link rel="stylesheet" href="style.css">
+  <title>Minimalist Tarot</title>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>SCIENTIFIC TAROT</h1>
-      <p class="subtitle">A Minimalist Archetype Reader</p>
+
+  <div class="app-container">
+    <header class="museum-header">
+      <h1>Tarot Reader</h1>
+      <p id="instruction">Calibrate your focus and intention.</p>
     </header>
 
-    <main>
-      <div class="control-panel">
-        <button id="draw-btn" class="charge-button">
-          <span class="btn-icon">✦</span>
-          <span class="btn-text">Initialize Reading</span>
-        </button>
-        <p id="status-text" class="status-text">Click to begin reading</p>
-      </div>
-
-      <div id="cards-container" class="cards-grid">
-        <!-- Card 1 -->
-        <div class="card-slot" id="card-0">
-          <div class="card-inner">
-            <div class="card-front">
-              <span class="card-symbol">✦</span>
-            </div>
-            <div class="card-back">
-              <div class="card-title">---</div>
-              <div class="card-orientation">---</div>
-            </div>
-          </div>
-        </div>
-        <!-- Card 2 -->
-        <div class="card-slot" id="card-1">
-          <div class="card-inner">
-            <div class="card-front">
-              <span class="card-symbol">✦</span>
-            </div>
-            <div class="card-back">
-              <div class="card-title">---</div>
-              <div class="card-orientation">---</div>
-            </div>
-          </div>
-        </div>
-        <!-- Card 3 -->
-        <div class="card-slot" id="card-2">
-          <div class="card-inner">
-            <div class="card-front">
-              <span class="card-symbol">✦</span>
-            </div>
-            <div class="card-back">
-              <div class="card-title">---</div>
-              <div class="card-orientation">---</div>
-            </div>
-          </div>
+    <!-- Dials -->
+    <div id="dials-container">
+      <div id="dial-focus" class="dial-group">
+        <label class="dial-label">1. Focus Area</label>
+        <div class="options-grid">
+          <button class="option-btn" data-type="focus" data-value="Career">Career</button>
+          <button class="option-btn" data-type="focus" data-value="Relationships">Relationships</button>
+          <button class="option-btn" data-type="focus" data-value="Personal Growth">Personal Growth</button>
+          <button class="option-btn" data-type="focus" data-value="Energy & Drive">Energy & Drive</button>
         </div>
       </div>
 
-      <div id="reading-output" class="reading-output hidden">
-        <h2 id="reading-title">Synthesis</h2>
-        <p id="reading-text"></p>
+      <div id="dial-intention" class="dial-group">
+        <label class="dial-label">2. Intention Stance</label>
+        <div class="options-grid">
+          <button class="option-btn" data-type="intention" data-value="Overcoming a Block">Overcoming a Block</button>
+          <button class="option-btn" data-type="intention" data-value="Seeking Clarity">Seeking Clarity</button>
+          <button class="option-btn" data-type="intention" data-value="Next Move">Next Move</button>
+        </div>
       </div>
-    </main>
+    </div>
 
-    <footer>
-      <p>Scientific Tarot &copy; 2026</p>
-    </footer>
+    <!-- Interactive Charging Module -->
+    <div id="charge-wrapper" class="hidden">
+      <svg class="progress-ring" width="140" height="140">
+        <circle class="progress-ring__track" stroke="#222" stroke-width="4" fill="transparent" r="64" cx="70" cy="70"/>
+        <circle class="progress-ring__circle" stroke="#d4af37" stroke-width="4" fill="transparent" r="64" cx="70" cy="70"/>
+      </svg>
+      <button id="charge-btn">HOLD</button>
+    </div>
+    
+    <!-- 3 Face-Down Cards -->
+    <div id="cards-container" class="hidden">
+      <div class="card-back" data-card-index="0"></div>
+      <div class="card-back" data-card-index="1"></div>
+      <div class="card-back" data-card-index="2"></div>
+    </div>
+
+    <!-- Reading Display -->
+    <div id="card-display" class="hidden"></div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>
