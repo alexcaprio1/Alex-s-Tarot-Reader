@@ -1,4 +1,6 @@
-// Complete Major Arcana Deck Array linked to local Tarot Images folder
+// ==========================================
+// 1. TAROT DECK ARRAY (Local Images Path)
+// ==========================================
 const deck = [
   { name: "0. The Fool", image: "./Tarot Images/RWS_Tarot_00_Fool.jpg", upright: "New beginnings, innocence, spontaneity.", reversed: "Recklessness, risk-taking, inconsideration." },
   { name: "I. The Magician", image: "./Tarot Images/RWS_Tarot_01_Magician.jpg", upright: "Manifestation, resourcefulness, power.", reversed: "Illusion, manipulation, unused talent." },
@@ -24,104 +26,128 @@ const deck = [
   { name: "XXI. The World", image: "./Tarot Images/RWS_Tarot_21_World.jpg", upright: "Completion, integration, accomplishment, travel.", reversed: "Seeking personal closure, short-cuts, delays." }
 ];
 
-// App State Variables
-let selectedFocus = "General";
-let selectedIntention = "Clarity";
+// App State
+let selectedFocus = null;
+let selectedIntention = null;
+let drawnCards = [];
 
-// 1. Dial Selection Setup
-document.querySelectorAll('.dial-option').forEach(option => {
-  option.addEventListener('click', (e) => {
-    const parent = e.target.parentElement;
-    parent.querySelectorAll('.dial-option').forEach(opt => opt.classList.remove('active'));
+// DOM Elements
+const chargeWrapper = document.getElementById('charge-wrapper');
+const dialsContainer = document.getElementById('dials-container');
+const cardsContainer = document.getElementById('cards-container');
+const cardDisplay = document.getElementById('card-display');
+const instruction = document.getElementById('instruction');
+
+// ==========================================
+// 2. DIAL SELECTION LOGIC
+// ==========================================
+document.querySelectorAll('.option-btn').forEach(button => {
+  button.addEventListener('click', (e) => {
+    const type = e.target.dataset.type;
+    const value = e.target.dataset.value;
+
+    // Highlight selected button in group
+    const parentGroup = e.target.closest('.dial-group');
+    parentGroup.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
     e.target.classList.add('active');
-    
-    if (parent.dataset.type === "focus") {
-      selectedFocus = e.target.dataset.value;
-    } else if (parent.dataset.type === "intention") {
-      selectedIntention = e.target.dataset.value;
+
+    // Save selection
+    if (type === 'focus') selectedFocus = value;
+    if (type === 'intention') selectedIntention = value;
+
+    // Check if both selections are made, then reveal Hold button
+    if (selectedFocus && selectedIntention) {
+      chargeWrapper.classList.remove('hidden');
+      instruction.textContent = "Press and hold to charge your reading.";
     }
   });
 });
 
-// 2. Hold-to-Charge Ritual Mechanics
+// ==========================================
+// 3. HOLD-TO-CHARGE MECHANICS (SVG RING)
+// ==========================================
 const chargeBtn = document.getElementById('charge-btn');
-const progressFill = document.getElementById('progress-fill');
+const progressCircle = document.querySelector('.progress-ring__circle');
 let chargeTimer = null;
-let holdDuration = 0;
-const REQUIRED_HOLD = 3000; // 3 seconds hold
+let progress = 0;
 
-function startCharging() {
-  holdDuration = 0;
-  progressFill.style.transition = 'width 3s linear';
-  progressFill.style.width = '100%';
-
-  chargeTimer = setTimeout(() => {
-    completeCharging();
-  }, REQUIRED_HOLD);
+function startCharge() {
+  progress = 0;
+  if (progressCircle) progressCircle.style.strokeDashoffset = '0';
+  
+  chargeTimer = setInterval(() => {
+    progress += 5;
+    if (progress >= 100) {
+      clearInterval(chargeTimer);
+      completeCharge();
+    }
+  }, 100);
 }
 
-function stopCharging() {
-  clearTimeout(chargeTimer);
-  progressFill.style.transition = 'width 0.3s ease';
-  progressFill.style.width = '0%';
+function stopCharge() {
+  clearInterval(chargeTimer);
+  progress = 0;
+  if (progressCircle) progressCircle.style.strokeDashoffset = '400';
 }
 
-function completeCharging() {
-  document.getElementById('ritual-screen').style.display = 'none';
-  document.getElementById('reading-screen').style.display = 'block';
-  generateReading();
+function completeCharge() {
+  dialsContainer.classList.add('hidden');
+  chargeWrapper.classList.add('hidden');
+  cardsContainer.classList.remove('hidden');
+  instruction.textContent = "Select a card to reveal your reading.";
+  
+  // Pick 3 unique random cards
+  const shuffled = [...deck].sort(() => 0.5 - Math.random());
+  drawnCards = shuffled.slice(0, 3);
 }
 
 if (chargeBtn) {
-  chargeBtn.addEventListener('mousedown', startCharging);
-  chargeBtn.addEventListener('mouseup', stopCharging);
-  chargeBtn.addEventListener('mouseleave', stopCharging);
-  chargeBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startCharging(); });
-  chargeBtn.addEventListener('touchend', stopCharging);
+  chargeBtn.addEventListener('mousedown', startCharge);
+  chargeBtn.addEventListener('mouseup', stopCharge);
+  chargeBtn.addEventListener('mouseleave', stopCharge);
+  chargeBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startCharge(); });
+  chargeBtn.addEventListener('touchend', stopCharge);
 }
 
-// 3. Card Selection & Reading Generator
-function generateReading() {
-  // Shuffle & Draw Card
-  const randomIndex = Math.floor(Math.random() * deck.length);
-  const card = deck[randomIndex];
-  const isReversed = Math.random() < 0.5;
+// ==========================================
+// 4. CARD REVEAL & DISPLAY
+// ==========================================
+document.querySelectorAll('.card-back').forEach(cardElem => {
+  cardElem.addEventListener('click', (e) => {
+    const cardIndex = e.target.dataset.cardIndex;
+    const selectedCard = drawnCards[cardIndex];
+    const isReversed = Math.random() < 0.5;
 
-  // DOM Elements
-  const cardImg = document.getElementById('card-image');
-  const cardNameElem = document.getElementById('card-name');
-  const orientationElem = document.getElementById('card-orientation');
-  const tagsElem = document.getElementById('reading-tags');
-  const focusElem = document.getElementById('reading-focus');
-  const exampleElem = document.getElementById('reading-example');
+    // Display selected reading
+    cardsContainer.classList.add('hidden');
+    cardDisplay.classList.remove('hidden');
 
-  // Set Card Display Info
-  cardImg.src = card.image;
-  cardImg.alt = card.name;
-  
-  if (isReversed) {
-    cardImg.classList.add('reversed');
-    orientationElem.textContent = "Reversed";
-  } else {
-    cardImg.classList.remove('reversed');
-    orientationElem.textContent = "Upright";
-  }
+    const meaning = isReversed ? selectedCard.reversed : selectedCard.upright;
+    const orientationText = isReversed ? "Reversed" : "Upright";
 
-  cardNameElem.textContent = card.name;
-  tagsElem.textContent = `${selectedFocus.toUpperCase()} | ${selectedIntention.toUpperCase()}`;
+    cardDisplay.innerHTML = `
+      <div class="reading-result">
+        <h2>${selectedCard.name} (${orientationText})</h2>
+        <img src="${selectedCard.image}" alt="${selectedCard.name}" class="${isReversed ? 'reversed' : ''}">
+        <p><strong>Focus:</strong> ${selectedFocus} | <strong>Intention:</strong> ${selectedIntention}</p>
+        <p class="meaning-text">${meaning}</p>
+        <button id="reset-btn" class="option-btn">Read Again</button>
+      </div>
+    `;
 
-  // Plain-English Reading Logic
-  const meaningText = isReversed ? card.reversed : card.upright;
-  focusElem.innerHTML = `To unblock your <strong>${selectedFocus}</strong>, address <strong>${meaningText.toLowerCase()}</strong>.`;
-  exampleElem.textContent = `Applying this to ${selectedIntention.toLowerCase()}: focus on practical, grounded steps to align with this energy.`;
-}
-
-// Reset / Read Again Button
-const resetBtn = document.getElementById('reset-btn');
-if (resetBtn) {
-  resetBtn.addEventListener('click', () => {
-    document.getElementById('reading-screen').style.display = 'none';
-    document.getElementById('ritual-screen').style.display = 'block';
-    progressFill.style.width = '0%';
+    document.getElementById('reset-btn').addEventListener('click', resetApp);
   });
+});
+
+function resetApp() {
+  selectedFocus = null;
+  selectedIntention = null;
+  drawnCards = [];
+
+  document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+  cardDisplay.classList.add('hidden');
+  cardsContainer.classList.add('hidden');
+  chargeWrapper.classList.add('hidden');
+  dialsContainer.classList.remove('hidden');
+  instruction.textContent = "Calibrate your focus and intention.";
 }
