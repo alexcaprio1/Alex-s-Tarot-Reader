@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <h1>Tarot Card Reader</h1>
+    <p id="instruction">Calibrate your focus and intention before charging the deck.</p>
+
+    <!-- Dial 1: Focus Area -->
+    <div id="dial-focus" class="dial-group">
+      <label class="dial-label">1. Focus Area</label>
+      <div class="options-grid">
+        <button class="option-btn" data-type="focus" data-value="Career">💼 Career</button>
+        <button class="option-btn" data-type="focus" data-value="Relationships">🤍 Relationships</button>
+        <button class="option-btn" data-type="focus" data-value="Personal Growth">🌿 Personal Growth</button>
+        <button class="option-btn" data-type="focus" data-value="Energy & Drive">⚡ Energy & Drive</button>
+      </div>
+    </div>
+
+    <!-- Dial 2: Intention Stance -->
+    <div id="dial-intention" class="dial-group">
+      <label class="dial-label">2. Intention Stance</label>
+      <div class="options-grid">
+        <button class="option-btn" data-type="intention" data-value="Overcoming a Block">🧱 Overcoming a Block</button>
+        <button class="option-btn" data-type="intention" data-value="Seeking Clarity">🔍 Seeking Clarity</button>
+        <button class="option-btn" data-type="intention" data-value="Next Move">🚀 Next Move</button>
+      </div>
+    </div>
+    
+    <!-- The Charge Button (Disabled initially) -->
+    <button id="charge-btn" class="disabled-btn" disabled>Select Focus & Intention to Unlock</button>
+
+    <!-- Container for the 3 face-down cards -->
+    <div id="cards-container" class="hidden">
+      <div class="card-back" data-card-index="0">?</div>
+      <div class="card-back" data-card-index="1">?</div>
+      <div class="card-back" data-card-index="2">?</div>
+    </div>
+
+    <!-- Display area for the final drawn card -->
+    <div id="card-display" class="hidden"></div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+.hidden {
+  display: none !important;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  background-color: #1a1a2e;
+  color: #e0e0e0;
+  text-align: center;
+  padding: 30px 15px;
+}
+
+.app-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Dial Selectors Styling */
+.dial-group {
+  margin-bottom: 20px;
+  background-color: #16213e;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #2b2b48;
+}
+
+.dial-label {
+  display: block;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #d4af37;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.option-btn {
+  background-color: #1a1a2e;
+  color: #c0c0c0;
+  border: 1px solid #444;
+  padding: 8px 14px;
+  font-size: 13px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  border-color: #d4af37;
+  color: #ffffff;
+}
+
+.option-btn.selected {
+  background-color: #d4af37;
+  color: #1a1a2e;
+  border-color: #d4af37;
+  font-weight: bold;
+}
+
+/* Primary Action Button */
+#charge-btn {
+  background-color: #d4af37;
+  color: #1a1a2e;
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s, opacity 0.2s;
+  margin-top: 10px;
+}
+
+#charge-btn.disabled-btn {
+  background-color: #44445c;
+  color: #888899;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#charge-btn:not(.disabled-btn):hover {
+  background-color: #f1c40f;
+  transform: scale(1.05);
+}
+
+/* Layout for the 3 face-down cards */
+#cards-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.card-back {
+  width: 90px;
+  height: 150px;
+  background-color: #2b2b48;
+  color: #d4af37;
+  font-size: 28px;
+  font-weight: bold;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid #d4af37;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-back:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* Reading Output Display */
+#card-display {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #16213e;
+  border: 1px solid #d4af37;
+  border-radius: 12px;
+  display: inline-block;
+  max-width: 360px;
+}
+
+.tarot-img {
+  width: 170px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  margin: 15px 0;
+  transition: transform 0.3s ease;
+}
+
+.tarot-img.reversed {
+  transform: rotate(180deg);
+}
+
+.card-status {
+  color: #d4af37;
+  font-style: italic;
+  font-size: 14px;
+  margin-top: -5px;
+}
+
+.reading-meta {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8888aa;
+  margin-bottom: 10px;
+}
+
+.reading-text {
+  text-align: left;
+  line-height: 1.5;
+  font-size: 14px;
+  color: #e0e0e0;
+}
