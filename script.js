@@ -24,19 +24,21 @@ const deck = [
   { name: "XXI. The World", image: "./Tarot Images/RWS_Tarot_21_World.jpg", upright: { vibe: "crossing the finish line on a major chapter", example: "Finishing a long-term goal with a full sense of accomplishment." }, reversed: { vibe: "almost done, but stuck on the last few details", example: "Being 95% done with something but dragging your feet on the end." } }
 ];
 
-// 2. Dial Tracking
+// 2. Dial Tracking & DOM Selection
 let selectedFocus = null;
 let selectedIntention = null;
 
 const optionBtns = document.querySelectorAll(".option-btn");
 const chargeBtn = document.getElementById("charge-btn");
+const chargeFill = document.getElementById("charge-fill");
+const chargeText = document.getElementById("charge-text");
+const sparkRing = document.getElementById("spark-ring");
 const cardsContainer = document.getElementById("cards-container");
 const instruction = document.getElementById("instruction");
 const cardDisplay = document.getElementById("card-display");
 const cardBacks = document.querySelectorAll(".card-back");
 const dialFocusGroup = document.getElementById("dial-focus");
 const dialIntentionGroup = document.getElementById("dial-intention");
-
 
 // Handle Option Selection
 optionBtns.forEach(btn => {
@@ -53,17 +55,42 @@ optionBtns.forEach(btn => {
     if (selectedFocus && selectedIntention) {
       chargeBtn.classList.remove("disabled-btn");
       chargeBtn.removeAttribute("disabled");
-      chargeBtn.innerText = "Hold to Charge Deck";
+      chargeText.innerText = "Hold to Charge Deck";
       instruction.innerText = "Dials set. Press and hold to focus your energy into the deck.";
     }
   });
 });
 
-// 3. Hold-to-Charge Logic (Randomized 2.5s - 6s Calibration)
+// 3. Hold-to-Charge Logic & Portal Sparks
 let chargeInterval;
 let chargeProgress = 0;
 let targetChargeTime = 3000;
 const updateInterval = 30;
+
+function createPortalSpark(intensityRatio) {
+  // Spawns more sparks as intensity increases
+  const sparkCount = Math.floor(1 + intensityRatio * 4);
+
+  for (let i = 0; i < sparkCount; i++) {
+    const spark = document.createElement("div");
+    spark.classList.add("portal-spark");
+
+    // Angle around the circular perimeter (0 - 360deg)
+    const angle = Math.random() * 360;
+    // Flying distance outward like a ring spark
+    const flyDistance = -80 - Math.random() * (20 + intensityRatio * 30);
+
+    spark.style.setProperty("--angle", `${angle}deg`);
+    spark.style.setProperty("--distance", `${flyDistance}px`);
+
+    sparkRing.appendChild(spark);
+
+    // Remove particle after animation finishes
+    setTimeout(() => {
+      spark.remove();
+    }, 400);
+  }
+}
 
 function startCharging() {
   if (!selectedFocus || !selectedIntention) return;
@@ -74,22 +101,26 @@ function startCharging() {
 
   chargeInterval = setInterval(() => {
     chargeProgress += updateInterval;
-    const progressRatio = chargeProgress / targetChargeTime;
-    const percentage = progressRatio * 100;
+    const progressRatio = Math.min(chargeProgress / targetChargeTime, 1);
 
-    chargeBtn.style.background = `conic-gradient(#d4af37 ${percentage}%, #16213e ${percentage}%)`;
+    // Smoothly scale the fill from center outward (0.0 to 1.0)
+    chargeFill.style.transform = `translate(-50%, -50%) scale(${progressRatio})`;
 
+    // Emit perimeter sparks (frequency increases with progress)
+    createPortalSpark(progressRatio);
+
+    // Update Breathing Labels & Guidance Below
     if (progressRatio < 0.25) {
-      chargeBtn.innerText = "Breathe In...";
+      chargeText.innerText = "Breathe In...";
       instruction.innerText = "Aligning your energy... take a slow breath in.";
     } else if (progressRatio < 0.60) {
-      chargeBtn.innerText = "Visualize...";
+      chargeText.innerText = "Visualize...";
       instruction.innerText = "Picture your focus clearly in your mind...";
     } else if (progressRatio < 0.85) {
-      chargeBtn.innerText = "Manifesting...";
+      chargeText.innerText = "Manifesting...";
       instruction.innerText = "Gathering intent into the deck...";
     } else {
-      chargeBtn.innerText = "Breathe Out...";
+      chargeText.innerText = "Breathe Out...";
       instruction.innerText = "Release your hold and let the energy settle...";
     }
 
@@ -97,14 +128,15 @@ function startCharging() {
       clearInterval(chargeInterval);
       chargeBtn.classList.remove("charging");
       chargeBtn.classList.add("sparkle-flash");
+      chargeText.innerText = "Charged!";
       instruction.innerText = "Deck fully charged! Select the card you feel drawn to:";
 
       setTimeout(() => {
-        chargeBtn.classList.add("hidden");
+        document.querySelector(".charge-wrapper").classList.add("hidden");
         dialFocusGroup.classList.add("hidden");
         dialIntentionGroup.classList.add("hidden");
         cardsContainer.classList.remove("hidden");
-      }, 400);
+      }, 500);
     }
   }, updateInterval);
 }
@@ -114,8 +146,8 @@ function stopCharging() {
     clearInterval(chargeInterval);
     chargeProgress = 0;
     chargeBtn.classList.remove("charging");
-    chargeBtn.style.background = "#16213e";
-    chargeBtn.innerText = "Hold to Charge";
+    chargeFill.style.transform = "translate(-50%, -50%) scale(0)";
+    chargeText.innerText = "Hold to Charge";
     instruction.innerText = "Connection paused! Hold down steady until the energy loop completes.";
   }
 }
