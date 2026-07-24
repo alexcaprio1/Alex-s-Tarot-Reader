@@ -74,12 +74,13 @@ body {
 }
 
 /* Circular Charge Button */
+/* Circular Charge Button Container */
 #charge-btn {
   width: 150px;
   height: 150px;
   margin: 30px auto;
   border-radius: 50%;
-  background: #16213e;
+  background-color: #16213e;
   border: 2px solid #d4af37;
   color: #d4af37;
   font-family: 'Georgia', serif;
@@ -97,10 +98,10 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   user-select: none;
   position: relative;
-  /* Anti-aliasing fix for smooth circle clipping */
-  isolation: isolate;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  /* Clean anti-aliased circular masking */
+  background-clip: padding-box;
+  overflow: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 /* Hover state when enabled */
@@ -117,7 +118,7 @@ body {
   box-shadow: none;
 }
 
-/* Active Charging Animation (Smooth Outer Aura) */
+/* Active Charging Animation */
 #charge-btn.charging {
   animation: pulse-aura 1.2s ease-in-out infinite alternate;
 }
@@ -130,6 +131,22 @@ body {
   100% {
     box-shadow: 0 0 35px rgba(212, 175, 55, 0.9), 0 0 15px rgba(255, 255, 255, 0.6);
     transform: scale(1.03);
+  }
+}
+
+/* Sparkle Flash Triggered at 100% Charge */
+.sparkle-flash {
+  animation: flash-sparkle 0.5s ease-out forwards;
+}
+
+@keyframes flash-sparkle {
+  0% {
+    box-shadow: 0 0 50px 20px #ffffff, 0 0 80px 30px #d4af37;
+    transform: scale(1.15);
+  }
+  100% {
+    box-shadow: 0 0 0px 0px transparent;
+    transform: scale(1);
   }
 }
 
