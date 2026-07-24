@@ -171,13 +171,14 @@ body {
 }
 
 /* Individual Portal Spark Particles */
+/* Restored Doctor Strange Spark Ring Particles */
 .portal-spark {
   position: absolute;
-  width: 5px;
-  height: 5px;
-  background: #fff;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #ffffff 0%, #ffcc00 40%, #ff3300 100%);
   border-radius: 50%;
-  box-shadow: 0 0 6px #ffcc00, 0 0 10px #ff3300;
+  box-shadow: 0 0 8px #ffcc00, 0 0 16px #ff3300, 0 0 24px #ff8c00;
   pointer-events: none;
   transform: translate(-50%, -50%);
   animation: spark-fade 0.8s ease-out forwards;
@@ -186,14 +187,15 @@ body {
 @keyframes spark-fade {
   0% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1.6);
+    filter: brightness(1.8);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2);
+    transform: translate(-50%, -50%) scale(0.1);
+    filter: brightness(0.5);
   }
 }
-
 /* Intense Final Burst Spark Particles */
 .burst-spark {
   position: absolute;
@@ -331,7 +333,7 @@ body {
   display: inline-block;
   margin: 1.5rem auto;
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
   cursor: crosshair;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
