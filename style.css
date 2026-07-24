@@ -1,3 +1,4 @@
+/* Utility Class */
 .hidden {
   display: none !important;
 }
@@ -129,13 +130,13 @@ body {
   height: 150px;
   background: radial-gradient(circle, #f39c12 0%, #d4af37 70%, #b38728 100%);
   border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0); /* Starts at size 0 */
+  transform: translate(-50%, -50%) scale(0);
   transition: transform 0.05s linear;
   pointer-events: none;
   z-index: 1;
 }
 
-/* Button Text Layer (Always Visible on Top) */
+/* Button Text Layer */
 .charge-text {
   position: relative;
   z-index: 2;
@@ -286,7 +287,7 @@ body {
   box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
 }
 
-/* Reading Output Display */
+/* Reading Output Display Container */
 #card-display {
   margin-top: 20px;
   padding: 20px;
@@ -294,20 +295,9 @@ body {
   border: 1px solid #d4af37;
   border-radius: 12px;
   display: inline-block;
-  max-width: 360px;
-}
-
-.tarot-img {
-  width: 170px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  margin: 15px 0;
-  transition: transform 0.3s ease;
-}
-
-.tarot-img.reversed {
-  transform: rotate(180deg);
+  max-width: 380px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .card-status {
@@ -330,4 +320,151 @@ body {
   line-height: 1.5;
   font-size: 14px;
   color: #e0e0e0;
+}
+
+/* ==========================================
+   COSMIC LENS & INTERACTIVE CARD SPOTLIGHT
+   ========================================== */
+
+/* Wrapper for relative positioning of lens & dots */
+.interactive-tarot-focus-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 1.5rem auto;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: crosshair;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.interactive-tarot-focus-wrapper .tarot-img {
+  display: block;
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  transition: filter 0.3s ease, transform 0.3s ease;
+  margin: 0 auto;
+}
+
+.interactive-tarot-focus-wrapper .tarot-img.reversed {
+  transform: rotate(180deg);
+}
+
+/* Dim card slightly on hover to make the spotlight pop */
+.interactive-tarot-focus-wrapper:hover .tarot-img {
+  filter: brightness(0.7) contrast(1.1);
+}
+
+/* Circular Glowing Lens */
+.cosmic-lens {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  border: 2px solid rgba(255, 215, 0, 0.85);
+  box-shadow: 
+    0 0 15px rgba(255, 215, 0, 0.6),
+    inset 0 0 15px rgba(255, 215, 0, 0.4),
+    0 0 0 9999px rgba(0, 0, 0, 0.25);
+  transition: opacity 0.15s ease-out;
+  z-index: 10;
+}
+
+/* ==========================================
+   SYMBOL HOTSPOT DOTS & TOOLTIPS
+   ========================================== */
+
+.symbol-hint-dots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Pulsing Gold Hotspot Dot */
+.symbol-hotspot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #ffd700;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 8px #ffd700;
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* Inner core of hotspot */
+.symbol-hotspot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 215, 0, 0.6);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring-expand 2s infinite ease-in-out;
+}
+
+/* Tooltip Popup on Hotspot Hover */
+.hotspot-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  width: 160px;
+  background-color: rgba(15, 15, 25, 0.95);
+  color: #f0f0f0;
+  text-align: center;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  position: absolute;
+  bottom: 145%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  z-index: 30;
+}
+
+.symbol-hotspot:hover .hotspot-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(0.9);
+    box-shadow: 0 0 6px #ffd700;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 14px #ffd700;
+  }
+}
+
+@keyframes ring-expand {
+  0% {
+    width: 14px;
+    height: 14px;
+    opacity: 1;
+  }
+  100% {
+    width: 28px;
+    height: 28px;
+    opacity: 0;
+  }
 }
