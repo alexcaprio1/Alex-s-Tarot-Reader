@@ -54,6 +54,15 @@ const cardDisplay = document.getElementById('card-display');
 const mainImg = document.getElementById('main-tarot-img');
 const cosmicLens = document.getElementById('cosmic-lens');
 const symbolDotsContainer = document.getElementById('symbol-hint-dots');
+const sparkRing = document.getElementById('spark-ring');
+const breathingPrompts = [
+  "Inhale focus...",
+  "Hold clarity...",
+  "Exhale noise...",
+  "Aligning intention..."
+];
+let promptIndex = 0;
+let sparkInterval = null;
 
 // --- EVENT LISTENERS: DIALS ---
 optionBtns.forEach(btn => {
@@ -85,18 +94,53 @@ function checkDialCompletion() {
 }
 
 // --- HOLD-TO-CHARGE LOGIC ---
+function createSparkle() {
+  if (!sparkRing) return;
+  const spark = document.createElement('div');
+  spark.className = 'portal-spark';
+  
+  // Randomize placement along the ring boundary
+  const angle = Math.random() * Math.PI * 2;
+  const radius = 40 + Math.random() * 20; // Matches button ring radius
+  const x = Math.cos(angle) * radius;
+  const y = Math.sin(angle) * radius;
+  
+  spark.style.left = `calc(50% + ${x}px)`;
+  spark.style.top = `calc(50% + ${y}px)`;
+  
+  sparkRing.appendChild(spark);
+  
+  // Remove particle after animation finishes
+  setTimeout(() => spark.remove(), 800);
+}
+
 function startCharge(e) {
   e.preventDefault();
   if (!selectedFocus || !selectedIntention) return;
 
   chargeBtn.classList.add('charging');
-  chargeText.textContent = "Charging...";
+  holdProgress = 0;
+  promptIndex = 0;
+  
   let startTime = Date.now();
+
+  // Set initial breathing prompt
+  chargeText.textContent = breathingPrompts[0];
 
   holdTimer = setInterval(() => {
     let elapsedTime = Date.now() - startTime;
     holdProgress = Math.min((elapsedTime / HOLD_DURATION) * 100, 100);
     chargeFill.style.width = `${holdProgress}%`;
+
+    // Rotate breathing prompts based on progress percentage
+    const step = Math.floor((holdProgress / 100) * breathingPrompts.length);
+    if (step < breathingPrompts.length && step !== promptIndex) {
+      promptIndex = step;
+      chargeText.textContent = breathingPrompts[promptIndex];
+    }
+
+    // Spawn sparkles during charge progress
+    createSparkle();
 
     if (holdProgress >= 100) {
       completeCharge();
@@ -111,6 +155,7 @@ function cancelCharge() {
     chargeFill.style.width = '0%';
     chargeBtn.classList.remove('charging');
     chargeText.textContent = "Hold to Charge Deck";
+    if (sparkRing) sparkRing.innerHTML = ''; // Clean up remaining sparkles
   }
 }
 
@@ -118,6 +163,7 @@ function completeCharge() {
   clearInterval(holdTimer);
   chargeText.textContent = "Deck Charged!";
   instructionText.textContent = "Select a card to reveal your alignment.";
+  if (sparkRing) sparkRing.innerHTML = '';
   
   // Hide controls & show face-down card deck
   setTimeout(() => {
