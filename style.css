@@ -73,10 +73,11 @@ body {
   margin: 30px 0;
 }
 
+/* Circular Charge Button */
 #charge-btn {
   width: 150px;
-  margin: 30px auto;
   height: 150px;
+  margin: 30px auto;
   border-radius: 50%;
   background: #16213e;
   border: 2px solid #d4af37;
@@ -93,10 +94,13 @@ body {
   text-align: center;
   padding: 15px;
   box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.1s linear;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   user-select: none;
   position: relative;
-  overflow: hidden;
+  /* Anti-aliasing fix for smooth circle clipping */
+  isolation: isolate;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Hover state when enabled */
@@ -113,37 +117,22 @@ body {
   box-shadow: none;
 }
 
-/* Active Charging Animation (Whimsical Pulsing Glow) */
+/* Active Charging Animation (Smooth Outer Aura) */
 #charge-btn.charging {
   animation: pulse-aura 1.2s ease-in-out infinite alternate;
 }
 
 @keyframes pulse-aura {
   0% {
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4), inset 0 0 10px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     transform: scale(1);
   }
   100% {
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.8), 0 0 15px #ffffff, inset 0 0 25px rgba(212, 175, 55, 0.5);
-    transform: scale(1.04);
+    box-shadow: 0 0 35px rgba(212, 175, 55, 0.9), 0 0 15px rgba(255, 255, 255, 0.6);
+    transform: scale(1.03);
   }
 }
 
-/* Sparkle Flash Triggered at 100% Charge */
-.sparkle-flash {
-  animation: flash-sparkle 0.5s ease-out forwards;
-}
-
-@keyframes flash-sparkle {
-  0% {
-    box-shadow: 0 0 50px 20px #ffffff, 0 0 80px 30px #d4af37;
-    transform: scale(1.15);
-  }
-  100% {
-    box-shadow: 0 0 0px 0px transparent;
-    transform: scale(1);
-  }
-}
 /* Layout for the 3 face-down cards */
 #cards-container {
   display: flex;
