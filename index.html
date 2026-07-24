@@ -10,7 +10,7 @@
 
   <div class="app-container">
     <h1>Tarot Card Reader</h1>
-    <p id="instruction">Calibrate your focus and intention before charging the deck.</p>
+    <p class="subtitle">Calibrate your focus and intention before charging the deck.</p>
 
     <!-- Dial 1: Focus Area -->
     <div id="dial-focus" class="dial-group">
@@ -33,8 +33,21 @@
       </div>
     </div>
 
-    <!-- The Charge Button (Disabled initially) -->
-    <button id="charge-btn" class="disabled-btn" disabled>Select Focus & Intention to Unlock</button>
+    <!-- Charge Button Container -->
+    <div class="charge-wrapper">
+      <!-- Portal Spark Ring Container -->
+      <div id="spark-ring" class="spark-ring"></div>
+      
+      <button id="charge-btn" class="disabled-btn" disabled>
+        <div id="charge-fill" class="charge-fill"></div>
+        <span id="charge-text" class="charge-text">Hold to Charge Deck</span>
+      </button>
+    </div>
+
+    <!-- Dynamic Breathing / Status Instruction Text Below Button -->
+    <p id="instruction" class="instruction-text">
+      Select a Focus Area and Intention Stance to begin.
+    </p>
 
     <!-- Container for the 3 face-down cards -->
     <div id="cards-container" class="hidden">
