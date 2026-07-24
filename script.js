@@ -37,7 +37,6 @@ const cardBacks = document.querySelectorAll(".card-back");
 const dialFocusGroup = document.getElementById("dial-focus");
 const dialIntentionGroup = document.getElementById("dial-intention");
 
-let holdTimer;
 
 // Handle Option Selection
 optionBtns.forEach(btn => {
@@ -60,26 +59,76 @@ optionBtns.forEach(btn => {
   });
 });
 
-// 3. Hold-to-Charge Logic
-chargeBtn.addEventListener("mousedown", () => {
-  if (!selectedFocus || !selectedIntention) return;
-  instruction.innerText = "Charging deck with your energy... hold steady...";
-  
-  holdTimer = setTimeout(() => {
-    instruction.innerText = "Deck fully charged! Select the card you feel drawn to:";
-    chargeBtn.classList.add("hidden");
-    dialFocusGroup.classList.add("hidden");
-    dialIntentionGroup.classList.add("hidden");
-    cardsContainer.classList.remove("hidden");
-  }, 1500);
-});
+// 3. Hold-to-Charge Logic (Randomized 2.5s - 6s Calibration)
+let chargeInterval;
+let chargeProgress = 0;
+let targetChargeTime = 3000;
+const updateInterval = 30;
 
-chargeBtn.addEventListener("mouseup", () => {
-  if (instruction.innerText.includes("Charging")) {
-    clearTimeout(holdTimer);
-    instruction.innerText = "Hold longer to focus your energy!";
+function startCharging() {
+  if (!selectedFocus || !selectedIntention) return;
+
+  targetChargeTime = Math.floor(Math.random() * (6000 - 2500 + 1)) + 2500;
+  chargeProgress = 0;
+  chargeBtn.classList.add("charging");
+
+  chargeInterval = setInterval(() => {
+    chargeProgress += updateInterval;
+    const progressRatio = chargeProgress / targetChargeTime;
+    const percentage = progressRatio * 100;
+
+    chargeBtn.style.background = `conic-gradient(#d4af37 ${percentage}%, #16213e ${percentage}%)`;
+
+    if (progressRatio < 0.25) {
+      chargeBtn.innerText = "Breathe In...";
+      instruction.innerText = "Aligning your energy... take a slow breath in.";
+    } else if (progressRatio < 0.60) {
+      chargeBtn.innerText = "Visualize...";
+      instruction.innerText = "Picture your focus clearly in your mind...";
+    } else if (progressRatio < 0.85) {
+      chargeBtn.innerText = "Manifesting...";
+      instruction.innerText = "Gathering intent into the deck...";
+    } else {
+      chargeBtn.innerText = "Breathe Out...";
+      instruction.innerText = "Release your hold and let the energy settle...";
+    }
+
+    if (chargeProgress >= targetChargeTime) {
+      clearInterval(chargeInterval);
+      chargeBtn.classList.remove("charging");
+      chargeBtn.classList.add("sparkle-flash");
+      instruction.innerText = "Deck fully charged! Select the card you feel drawn to:";
+
+      setTimeout(() => {
+        chargeBtn.classList.add("hidden");
+        dialFocusGroup.classList.add("hidden");
+        dialIntentionGroup.classList.add("hidden");
+        cardsContainer.classList.remove("hidden");
+      }, 400);
+    }
+  }, updateInterval);
+}
+
+function stopCharging() {
+  if (chargeProgress < targetChargeTime) {
+    clearInterval(chargeInterval);
+    chargeProgress = 0;
+    chargeBtn.classList.remove("charging");
+    chargeBtn.style.background = "#16213e";
+    chargeBtn.innerText = "Hold to Charge";
+    instruction.innerText = "Connection paused! Hold down steady until the energy loop completes.";
   }
+}
+
+chargeBtn.addEventListener("mousedown", startCharging);
+chargeBtn.addEventListener("mouseup", stopCharging);
+chargeBtn.addEventListener("mouseleave", stopCharging);
+
+chargeBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  startCharging();
 });
+chargeBtn.addEventListener("touchend", stopCharging);
 
 // 4. Reading Generator
 function generateAccessibleReading(card, isReversed, focus, intention) {
