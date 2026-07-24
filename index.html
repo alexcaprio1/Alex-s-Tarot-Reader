@@ -56,9 +56,25 @@
       <div class="card-back"></div>
     </div>
     
-    <!-- Display area for the final drawn card -->
-    <div id="card-display" class="hidden"></div>
+   <!-- Display area for the final drawn card with Spotlight/Zoom feature -->
+<div id="card-display" class="hidden cosmic-spotlight-group">
+  <div class="reading-header-meta">
+    <!-- Meta and Title go here -->
   </div>
+  
+  <div class="interactive-tarot-focus-wrapper">
+    <!-- Main Card Image -->
+    <img id="main-tarot-img" src="" alt="" class="tarot-img" />
+
+    <!-- COSMIC SPOTLIGHT ELEMENTS HERE 🎆 -->
+    <div id="cosmic-lens" class="cosmic-lens hidden"></div>
+    <div id="symbol-hint-dots" class="symbol-hint-dots hidden"></div>
+  </div>
+
+  <div class="reading-text-output">
+    <!-- Vibe and Example text -->
+  </div>
+</div>
 
   <script src="script.js"></script>
 </body>
