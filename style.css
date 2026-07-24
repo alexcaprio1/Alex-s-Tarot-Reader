@@ -194,15 +194,44 @@ body {
   }
 }
 
-/* Final Full-Charge Burst */
+/* Intense Final Burst Spark Particles */
+.burst-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #fff, 0 0 15px #ffd700, 0 0 25px #ff4500;
+  pointer-events: none;
+  z-index: 10;
+  animation: burst-fly 0.7s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes burst-fly {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0) scale(1.5);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(var(--distance)) scale(0.1);
+  }
+}
+
+/* Upgraded Full-Charge Burst Flash */
 .sparkle-flash {
-  animation: flash-sparkle 0.5s ease-out forwards;
+  animation: flash-sparkle 0.6s ease-out forwards;
 }
 
 @keyframes flash-sparkle {
   0% {
-    box-shadow: 0 0 50px 25px #ffffff, 0 0 90px 40px #d4af37;
-    transform: scale(1.1);
+    box-shadow: 0 0 80px 40px #ffffff, 0 0 140px 70px #d4af37, 0 0 180px 90px #ff8c00;
+    transform: scale(1.15);
   }
   100% {
     box-shadow: 0 0 0px 0px transparent;
