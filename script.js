@@ -92,6 +92,28 @@ function createPortalSpark(intensityRatio) {
   }
 }
 
+// Function to spawn an explosion of final sparkles
+function createFinalSparkleBurst() {
+  const totalSparks = 40; // Number of final burst particles
+  
+  for (let i = 0; i < totalSparks; i++) {
+    const spark = document.createElement("div");
+    spark.classList.add("burst-spark");
+
+    const angle = (360 / totalSparks) * i + (Math.random() * 10 - 5);
+    const flyDistance = -100 - Math.random() * 120; // Fly much further out
+
+    spark.style.setProperty("--angle", `${angle}deg`);
+    spark.style.setProperty("--distance", `${flyDistance}px`);
+
+    sparkRing.appendChild(spark);
+
+    setTimeout(() => {
+      spark.remove();
+    }, 700);
+  }
+}
+
 function startCharging() {
   if (!selectedFocus || !selectedIntention) return;
 
@@ -128,6 +150,10 @@ function startCharging() {
       clearInterval(chargeInterval);
       chargeBtn.classList.remove("charging");
       chargeBtn.classList.add("sparkle-flash");
+      
+      // TRIGGER THE BIG SPARKLE EXPLOSION HERE 🎆
+      createFinalSparkleBurst();
+
       chargeText.innerText = "Charged!";
       instruction.innerText = "Deck fully charged! Select the card you feel drawn to:";
 
@@ -136,7 +162,7 @@ function startCharging() {
         dialFocusGroup.classList.add("hidden");
         dialIntentionGroup.classList.add("hidden");
         cardsContainer.classList.remove("hidden");
-      }, 500);
+      }, 700);
     }
   }, updateInterval);
 }
