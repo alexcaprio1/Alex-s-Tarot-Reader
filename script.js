@@ -1,238 +1,224 @@
-// 1. Deck Data
-const deck = [
-  { name: "0. The Fool", image: "./Tarot Images/RWS_Tarot_00_Fool.jpg", upright: { vibe: "taking a leap of faith and starting fresh", example: "Saying yes to a new opportunity before feeling 100% ready." }, reversed: { vibe: "hesitating out of fear or rushing in blindly", example: "Overthinking a choice until you miss the chance entirely." } },
-  { name: "I. The Magician", image: "./Tarot Images/RWS_Tarot_01_Magician.jpg", upright: { vibe: "having all the tools you need to make it happen", example: "Realizing you already have the skills to pull this off." }, reversed: { vibe: "feeling unprepared or wasting energy on distractions", example: "Doubting your abilities despite having all the facts." } },
-  { name: "II. The High Priestess", image: "./Tarot Images/RWS_Tarot_02_High_Priestess.jpg", upright: { vibe: "trusting your gut before asking for opinions", example: "Knowing a decision is right for you before you can even explain why." }, reversed: { vibe: "ignoring your inner voice and letting outside noise confuse you", example: "Talking yourself out of a strong gut feeling." } },
-  { name: "III. The Empress", image: "./Tarot Images/RWS_Tarot_03_Empress.jpg", upright: { vibe: "giving things time to grow naturally and taking care of yourself", example: "Nurturing an idea step-by-step instead of forcing it." }, reversed: { vibe: "feeling drained from giving too much", example: "Feeling burnt out from doing all the heavy lifting for others." } },
-  { name: "IV. The Emperor", image: "./Tarot Images/RWS_Tarot_04_Emperor.jpg", upright: { vibe: "setting clear boundaries and taking control", example: "Saying a firm 'no' to protect your time and energy." }, reversed: { vibe: "being too rigid or trying to force control", example: "Trying to micro-manage details you should probably delegate." } },
-  { name: "V. The Hierophant", image: "./Tarot Images/RWS_Tarot_05_Hierophant.jpg", upright: { vibe: "sticking to proven methods and trusted advice", example: "Following a tried-and-true playbook that works." }, reversed: { vibe: "questioning old rules that don't fit you anymore", example: "Breaking away from 'how it's always been done.'" } },
-  { name: "VI. The Lovers", image: "./Tarot Images/RWS_Tarot_06_Lovers.jpg", upright: { vibe: "choosing what aligns with your true values", example: "Making a choice based on what actually matters to you." }, reversed: { vibe: "facing a conflict between your heart and your head", example: "Staying in a situation that clashes with your values." } },
-  { name: "VII. The Chariot", image: "./Tarot Images/RWS_Tarot_07_Chariot.jpg", upright: { vibe: "pushing forward with clear focus and determination", example: "Powering through distractions to finish a goal." }, reversed: { vibe: "losing control or pushing hard in the wrong direction", example: "Spinning your wheels on something hitting a dead end." } },
-  { name: "VIII. Strength", image: "./Tarot Images/RWS_Tarot_08_Strength.jpg", upright: { vibe: "handling tough situations with quiet confidence", example: "Keeping your cool during a tense moment." }, reversed: { vibe: "letting self-doubt or frustration take over", example: "Letting temporary stress convince you that you can't handle it." } },
-  { name: "IX. The Hermit", image: "./Tarot Images/RWS_Tarot_09_Hermit.jpg", upright: { vibe: "stepping back from the noise to figure out your next step", example: "Taking quiet time away from others to clear your head." }, reversed: { vibe: "isolating yourself too much or overthinking alone", example: "Hiding away instead of facing reality." } },
-  { name: "X. Wheel of Fortune", image: "./Tarot Images/RWS_Tarot_10_Wheel_of_Fortune.jpg", upright: { vibe: "a natural shift where things fall into place", example: "A sudden lucky break opening a new door." }, reversed: { vibe: "resisting a change you can't control", example: "Stressing over unexpected delays out of your hands." } },
-  { name: "XI. Justice", image: "./Tarot Images/RWS_Tarot_11_Justice.jpg", upright: { vibe: "looking at facts clearly and accepting fair outcomes", example: "Having an honest, clear conversation where both sides take responsibility." }, reversed: { vibe: "avoiding your own part in a problem", example: "Blaming circumstances instead of owning a mistake." } },
-  { name: "XII. The Hanged Man", image: "./Tarot Images/RWS_Tarot_12_Hanged_Man.jpg", upright: { vibe: "hitting pause to look at things from a new angle", example: "Stepping away from a problem so the answer can hit you naturally." }, reversed: { vibe: "forcing a move when you really just need to wait", example: "Pushing for a result before the timing is right." } },
-  { name: "XIII. Death", image: "./Tarot Images/RWS_Tarot_13_Death.jpg", upright: { vibe: "closing one chapter so a better one can start", example: "Ending an old habit that no longer serves you." }, reversed: { vibe: "clinging to something just because it's familiar", example: "Holding onto an old routine long after outgrowing it." } },
-  { name: "XIV. Temperance", image: "./Tarot Images/RWS_Tarot_14_Temperance.jpg", upright: { vibe: "finding a healthy middle ground and pacing yourself", example: "Balancing hard work with real downtime." }, reversed: { vibe: "swinging between overdoing it and total burnout", example: "Going 100 mph for days until you completely crash." } },
-  { name: "XV. The Devil", image: "./Tarot Images/RWS_Tarot_15_Devil.jpg", upright: { vibe: "spotting bad habits or loops that make you feel stuck", example: "Realizing you're staying in a comfort zone out of habit." }, reversed: { vibe: "breaking free from a pattern holding you back", example: "Finally cutting off a habit that kept you stuck." } },
-  { name: "XVI. The Tower", image: "./Tarot Images/RWS_Tarot_16_Tower.jpg", upright: { vibe: "a sudden eye-opener that changes your perspective", example: "Learning a truth that instantly shifts your plans." }, reversed: { vibe: "avoiding a truth or delaying a necessary change", example: "Ignoring a clear issue hoping it fixes itself." } },
-  { name: "XVII. The Star", image: "./Tarot Images/RWS_Tarot_17_Star.jpg", upright: { vibe: "feeling hopeful, calm, and clear about the future", example: "Getting your spark back after a tough stretch." }, reversed: { vibe: "feeling temporarily discouraged", example: "Focusing so much on a temporary flaw that you lose sight of the big picture." } },
-  { name: "XVIII. The Moon", image: "./Tarot Images/RWS_Tarot_18_Moon.jpg", upright: { vibe: "relying on instinct because facts aren't clear yet", example: "Moving carefully when you don't have the full story." }, reversed: { vibe: "confusion lifting and clarity emerging", example: "Finally seeing through the confusion on a tricky issue." } },
-  { name: "XIX. The Sun", image: "./Tarot Images/RWS_Tarot_19_Sun.jpg", upright: { vibe: "pure positive energy and smooth progress", example: "A moment where everything just flows effortlessly." }, reversed: { vibe: "good things are happening, but you're too worried to enjoy them", example: "Getting a win but immediately stressing over the next thing." } },
-  { name: "XX. Judgement", image: "./Tarot Images/RWS_Tarot_20_Judgement.jpg", upright: { vibe: "reflecting on growth and stepping up to the next level", example: "Learning from a past mistake and making a mature upgrade." }, reversed: { vibe: "being way too hard on yourself", example: "Second-guessing a choice you already made." } },
-  { name: "XXI. The World", image: "./Tarot Images/RWS_Tarot_21_World.jpg", upright: { vibe: "crossing the finish line on a major chapter", example: "Finishing a long-term goal with a full sense of accomplishment." }, reversed: { vibe: "almost done, but stuck on the last few details", example: "Being 95% done with something but dragging your feet on the end." } }
-];
-
-// 2. Dial Tracking & DOM Selection
+// --- STATE MANAGEMENT ---
 let selectedFocus = null;
 let selectedIntention = null;
+let holdTimer = null;
+let holdProgress = 0;
+const HOLD_DURATION = 2000; // 2 seconds to charge
 
-const optionBtns = document.querySelectorAll(".option-btn");
-const chargeBtn = document.getElementById("charge-btn");
-const chargeFill = document.getElementById("charge-fill");
-const chargeText = document.getElementById("charge-text");
-const sparkRing = document.getElementById("spark-ring");
-const cardsContainer = document.getElementById("cards-container");
-const instruction = document.getElementById("instruction");
-const cardDisplay = document.getElementById("card-display");
-const cardBacks = document.querySelectorAll(".card-back");
-const dialFocusGroup = document.getElementById("dial-focus");
-const dialIntentionGroup = document.getElementById("dial-intention");
+// --- TAROT DECK DATA SAMPLE ---
+// Each card includes its image, interpretation, and interactive symbol coordinates (percentages)
+const tarotDeck = [
+  {
+    name: "The Fool",
+    image: "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
+    vibe: "New beginnings, innocence, spontaneous action.",
+    meaning: "Stepping off the cliff into the unknown with pure trust. Clear the path for fresh perspective.",
+    symbols: [
+      { top: "78%", left: "75%", title: "White Dog", desc: "Symbol of protection, loyalty, and instinct warning of danger." },
+      { top: "18%", left: "68%", title: "White Sun", desc: "Represents conscious awareness, clarity, and divine guidance." },
+      { top: "38%", left: "42%", title: "White Rose", desc: "Purity of intention and freedom from base desires." }
+    ]
+  },
+  {
+    name: "The Magician",
+    image: "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
+    vibe: "Manifestation, resourcefulness, power, inspired action.",
+    meaning: "You have all the tools required at your disposal. Align your will with purpose.",
+    symbols: [
+      { top: "12%", left: "50%", title: "Lemniscate (Infinity)", desc: "Infinite potential and mastery over the spiritual and material realms." },
+      { top: "62%", left: "48%", title: "Altar Tools", desc: "Wand, Cup, Sword, and Pentacle representing the four classical elements." }
+    ]
+  },
+  {
+    name: "The Star",
+    image: "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg",
+    vibe: "Hope, faith, purpose, renewal, inspiration.",
+    meaning: "A calm light guiding you forward after hardship. Trust the clarity taking shape.",
+    symbols: [
+      { top: "18%", left: "50%", title: "Large Golden Star", desc: "Core hope, guidance, and spiritual alignment." },
+      { top: "58%", left: "38%", title: "Water Pitchers", desc: "Nourishing both the conscious mind (land) and unconscious intuition (water)." }
+    ]
+  }
+];
 
-// Handle Option Selection
+// --- DOM ELEMENTS ---
+const optionBtns = document.querySelectorAll('.option-btn');
+const chargeBtn = document.getElementById('charge-btn');
+const chargeFill = document.getElementById('charge-fill');
+const chargeText = document.getElementById('charge-text');
+const instructionText = document.getElementById('instruction');
+const cardsContainer = document.getElementById('cards-container');
+const cardDisplay = document.getElementById('card-display');
+
+// Spotlight DOM elements
+const mainImg = document.getElementById('main-tarot-img');
+const cosmicLens = document.getElementById('cosmic-lens');
+const symbolDotsContainer = document.getElementById('symbol-hint-dots');
+
+// --- EVENT LISTENERS: DIALS ---
 optionBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const type = btn.getAttribute("data-type");
-    const value = btn.getAttribute("data-value");
+  btn.addEventListener('click', (e) => {
+    const type = btn.getAttribute('data-type');
+    const value = btn.getAttribute('data-value');
 
-    document.querySelectorAll(`.option-btn[data-type="${type}"]`).forEach(b => b.classList.remove("selected"));
-    btn.classList.add("selected");
+    // Deselect siblings in the same dial group
+    const parentGroup = btn.closest('.dial-group');
+    parentGroup.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
 
-    if (type === "focus") selectedFocus = value;
-    if (type === "intention") selectedIntention = value;
+    // Select clicked button
+    btn.classList.add('selected');
 
-    if (selectedFocus && selectedIntention) {
-      chargeBtn.classList.remove("disabled-btn");
-      chargeBtn.removeAttribute("disabled");
-      chargeText.innerText = "Hold to Charge Deck";
-      instruction.innerText = "Dials set. Press and hold to focus your energy into the deck.";
-    }
+    if (type === 'focus') selectedFocus = value;
+    if (type === 'intention') selectedIntention = value;
+
+    checkDialCompletion();
   });
 });
 
-// 3. Hold-to-Charge Logic & Portal Sparks
-let chargeInterval;
-let chargeProgress = 0;
-let targetChargeTime = 3000;
-const updateInterval = 30;
-
-function createPortalSpark(intensityRatio) {
-  // Spawns more sparks as intensity increases
-  const sparkCount = Math.floor(1 + intensityRatio * 4);
-
-  for (let i = 0; i < sparkCount; i++) {
-    const spark = document.createElement("div");
-    spark.classList.add("portal-spark");
-
-    // Angle around the circular perimeter (0 - 360deg)
-    const angle = Math.random() * 360;
-    // Flying distance outward like a ring spark
-    const flyDistance = -80 - Math.random() * (20 + intensityRatio * 30);
-
-    spark.style.setProperty("--angle", `${angle}deg`);
-    spark.style.setProperty("--distance", `${flyDistance}px`);
-
-    sparkRing.appendChild(spark);
-
-    // Remove particle after animation finishes
-    setTimeout(() => {
-      spark.remove();
-    }, 400);
+function checkDialCompletion() {
+  if (selectedFocus && selectedIntention) {
+    chargeBtn.disabled = false;
+    chargeBtn.classList.remove('disabled-btn');
+    chargeBtn.classList.add('ready-btn');
+    instructionText.textContent = "Hold the button down to charge the deck with your focus.";
   }
 }
 
-// Function to spawn an explosion of final sparkles
-function createFinalSparkleBurst() {
-  const totalSparks = 40; // Number of final burst particles
-  
-  for (let i = 0; i < totalSparks; i++) {
-    const spark = document.createElement("div");
-    spark.classList.add("burst-spark");
-
-    const angle = (360 / totalSparks) * i + (Math.random() * 10 - 5);
-    const flyDistance = -100 - Math.random() * 120; // Fly much further out
-
-    spark.style.setProperty("--angle", `${angle}deg`);
-    spark.style.setProperty("--distance", `${flyDistance}px`);
-
-    sparkRing.appendChild(spark);
-
-    setTimeout(() => {
-      spark.remove();
-    }, 700);
-  }
-}
-
-function startCharging() {
+// --- HOLD-TO-CHARGE LOGIC ---
+function startCharge(e) {
+  e.preventDefault();
   if (!selectedFocus || !selectedIntention) return;
 
-  targetChargeTime = Math.floor(Math.random() * (6000 - 2500 + 1)) + 2500;
-  chargeProgress = 0;
-  chargeBtn.classList.add("charging");
+  chargeBtn.classList.add('charging');
+  chargeText.textContent = "Charging...";
+  let startTime = Date.now();
 
-  chargeInterval = setInterval(() => {
-    chargeProgress += updateInterval;
-    const progressRatio = Math.min(chargeProgress / targetChargeTime, 1);
+  holdTimer = setInterval(() => {
+    let elapsedTime = Date.now() - startTime;
+    holdProgress = Math.min((elapsedTime / HOLD_DURATION) * 100, 100);
+    chargeFill.style.width = `${holdProgress}%`;
 
-    // Smoothly scale the fill from center outward (0.0 to 1.0)
-    chargeFill.style.transform = `translate(-50%, -50%) scale(${progressRatio})`;
-
-    // Emit perimeter sparks (frequency increases with progress)
-    createPortalSpark(progressRatio);
-
-    // Update Breathing Labels & Guidance Below
-    if (progressRatio < 0.25) {
-      chargeText.innerText = "Breathe In...";
-      instruction.innerText = "Aligning your energy... take a slow breath in.";
-    } else if (progressRatio < 0.60) {
-      chargeText.innerText = "Visualize...";
-      instruction.innerText = "Picture your focus clearly in your mind...";
-    } else if (progressRatio < 0.85) {
-      chargeText.innerText = "Manifesting...";
-      instruction.innerText = "Gathering intent into the deck...";
-    } else {
-      chargeText.innerText = "Breathe Out...";
-      instruction.innerText = "Release your hold and let the energy settle...";
+    if (holdProgress >= 100) {
+      completeCharge();
     }
-
-    if (chargeProgress >= targetChargeTime) {
-      clearInterval(chargeInterval);
-      chargeBtn.classList.remove("charging");
-      chargeBtn.classList.add("sparkle-flash");
-      
-      // TRIGGER THE BIG SPARKLE EXPLOSION HERE 🎆
-      createFinalSparkleBurst();
-
-      chargeText.innerText = "Charged!";
-      instruction.innerText = "Deck fully charged! Select the card you feel drawn to:";
-
-      setTimeout(() => {
-        document.querySelector(".charge-wrapper").classList.add("hidden");
-        dialFocusGroup.classList.add("hidden");
-        dialIntentionGroup.classList.add("hidden");
-        cardsContainer.classList.remove("hidden");
-      }, 700);
-    }
-  }, updateInterval);
+  }, 20);
 }
 
-function stopCharging() {
-  if (chargeProgress < targetChargeTime) {
-    clearInterval(chargeInterval);
-    chargeProgress = 0;
-    chargeBtn.classList.remove("charging");
-    chargeFill.style.transform = "translate(-50%, -50%) scale(0)";
-    chargeText.innerText = "Hold to Charge";
-    instruction.innerText = "Connection paused! Hold down steady until the energy loop completes.";
+function cancelCharge() {
+  if (holdProgress < 100) {
+    clearInterval(holdTimer);
+    holdProgress = 0;
+    chargeFill.style.width = '0%';
+    chargeBtn.classList.remove('charging');
+    chargeText.textContent = "Hold to Charge Deck";
   }
 }
 
-chargeBtn.addEventListener("mousedown", startCharging);
-chargeBtn.addEventListener("mouseup", stopCharging);
-chargeBtn.addEventListener("mouseleave", stopCharging);
-
-chargeBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  startCharging();
-});
-chargeBtn.addEventListener("touchend", stopCharging);
-
-// 4. Reading Generator
-function generateAccessibleReading(card, isReversed, focus, intention) {
-  const details = isReversed ? card.reversed : card.upright;
-
-  let takeaway = "";
-  if (intention === "Overcoming a Block") {
-    takeaway = `To unblock your **${focus}**, focus on **${details.vibe}**.`;
-  } else if (intention === "Seeking Clarity") {
-    takeaway = `When it comes to **${focus}**, your clearest move is **${details.vibe}**.`;
-  } else if (intention === "Next Move") {
-    takeaway = `Your best next step in **${focus}** is **${details.vibe}**.`;
-  }
-
-  return {
-    takeaway: takeaway,
-    example: details.example
-  };
+function completeCharge() {
+  clearInterval(holdTimer);
+  chargeText.textContent = "Deck Charged!";
+  instructionText.textContent = "Select a card to reveal your alignment.";
+  
+  // Hide controls & show face-down card deck
+  setTimeout(() => {
+    document.querySelectorAll('.dial-group').forEach(d => d.classList.add('hidden'));
+    document.querySelector('.charge-wrapper').classList.add('hidden');
+    cardsContainer.classList.remove('hidden');
+    attachCardClickHandlers();
+  }, 600);
 }
 
-// 5. Card Selection & Draw
-cardBacks.forEach((card) => {
-  card.addEventListener("click", () => {
-    const randomIndex = Math.floor(Math.random() * deck.length);
-    const drawnCard = deck[randomIndex];
-    const isReversed = Math.random() < 0.5;
+chargeBtn.addEventListener('mousedown', startCharge);
+chargeBtn.addEventListener('mouseup', cancelCharge);
+chargeBtn.addEventListener('mouseleave', cancelCharge);
+chargeBtn.addEventListener('touchstart', startCharge);
+chargeBtn.addEventListener('touchend', cancelCharge);
 
-    cardsContainer.classList.add("hidden");
-    cardDisplay.classList.remove("hidden");
-    instruction.innerText = "Your Personal Reading:";
-
-    const reading = generateAccessibleReading(drawnCard, isReversed, selectedFocus, selectedIntention);
-
-    cardDisplay.innerHTML = `
-      <div class="reading-meta">${selectedFocus} • ${selectedIntention}</div>
-      <h2>${drawnCard.name}</h2>
-      <p class="card-status">${isReversed ? "Reversed" : "Upright"}</p>
-      <img 
-        src="${drawnCard.image}" 
-        alt="${drawnCard.name}" 
-        class="tarot-img ${isReversed ? "reversed" : ""}"
-      />
-      <div class="reading-text">
-        <p class="reading-vibe"><strong>Focus:</strong> ${reading.takeaway.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
-        <p class="reading-example"><strong>Example:</strong> ${reading.example}</p>
-      </div>
-    `;
+// --- DRAW & DISPLAY CARD ---
+function attachCardClickHandlers() {
+  const cardBacks = cardsContainer.querySelectorAll('.card-back');
+  cardBacks.forEach(card => {
+    card.addEventListener('click', () => {
+      // Pick a random card from deck
+      const randomCard = tarotDeck[Math.floor(Math.random() * tarotDeck.length)];
+      revealCard(randomCard);
+    });
   });
-});
+}
+
+function revealCard(card) {
+  cardsContainer.classList.add('hidden');
+  cardDisplay.classList.remove('hidden');
+
+  // Populate metadata and reading text
+  const headerMeta = cardDisplay.querySelector('.reading-header-meta');
+  const textOutput = cardDisplay.querySelector('.reading-text-output');
+
+  headerMeta.innerHTML = `
+    <p class="reading-context">Focus: <strong>${selectedFocus}</strong> | Stance: <strong>${selectedIntention}</strong></p>
+    <h2>${card.name}</h2>
+  `;
+
+  textOutput.innerHTML = `
+    <p class="vibe-tag"><em>${card.vibe}</em></p>
+    <p class="meaning-body">${card.meaning}</p>
+  `;
+
+  // Set image source
+  mainImg.src = card.image;
+  mainImg.alt = card.name;
+
+  // Initialize Cosmic Lens & Symbol Hotspots
+  setupCosmicLens(card);
+}
+
+// --- COSMIC LENS & SYMBOL HOTSPOT SYSTEM ---
+function setupCosmicLens(card) {
+  const wrapper = document.querySelector('.interactive-tarot-focus-wrapper');
+  
+  // Set cosmic lens background to card image for smooth zoom effect
+  cosmicLens.style.backgroundImage = `url('${card.image}')`;
+  
+  // Generate hotspot dots for this card's symbols
+  symbolDotsContainer.innerHTML = '';
+  symbolDotsContainer.classList.remove('hidden');
+
+  card.symbols.forEach((sym) => {
+    const dot = document.createElement('div');
+    dot.className = 'symbol-hotspot';
+    dot.style.top = sym.top;
+    dot.style.left = sym.left;
+
+    // Hotspot Tooltip
+    const tooltip = document.createElement('div');
+    tooltip.className = 'hotspot-tooltip';
+    tooltip.innerHTML = `<strong>${sym.title}</strong><br>${sym.desc}`;
+    dot.appendChild(tooltip);
+
+    symbolDotsContainer.appendChild(dot);
+  });
+
+  // Mouse Move Event for Spotlight Cursor Tracking
+  wrapper.addEventListener('mousemove', (e) => {
+    cosmicLens.classList.remove('hidden');
+
+    const rect = wrapper.getBoundingClientRect();
+    const x = e.clientX - rect.left; // x position inside container
+    const y = e.clientY - rect.top;  // y position inside container
+
+    // Center the lens over cursor
+    cosmicLens.style.left = `${x}px`;
+    cosmicLens.style.top = `${y}px`;
+
+    // Calculate background zoom positioning percentages
+    const percentX = (x / rect.width) * 100;
+    const percentY = (y / rect.height) * 100;
+
+    cosmicLens.style.backgroundPosition = `${percentX}% ${percentY}%`;
+    cosmicLens.style.backgroundSize = `${rect.width * 2.5}px ${rect.height * 2.5}px`;
+  });
+
+  wrapper.addEventListener('mouseleave', () => {
+    cosmicLens.classList.add('hidden');
+  });
+}
