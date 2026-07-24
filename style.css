@@ -66,31 +66,84 @@ body {
 }
 
 /* Primary Action Button */
+/* Circular Charge Button Wrapper */
+.charge-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
 #charge-btn {
-  background-color: #d4af37;
-  color: #1a1a2e;
-  border: none;
-  padding: 14px 28px;
-  font-size: 16px;
+  width: 150px;
+  margin: 30px auto;
+  height: 150px;
+  border-radius: 50%;
+  background: #16213e;
+  border: 2px solid #d4af37;
+  color: #d4af37;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
   font-weight: bold;
-  border-radius: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s, opacity 0.2s;
-  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 15px;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.1s linear;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
 }
 
-#charge-btn.disabled-btn {
-  background-color: #44445c;
-  color: #888899;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
+/* Hover state when enabled */
 #charge-btn:not(.disabled-btn):hover {
-  background-color: #f1c40f;
   transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
 }
 
+/* Disabled state */
+#charge-btn.disabled-btn {
+  border-color: #44445c;
+  color: #666688;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Active Charging Animation (Whimsical Pulsing Glow) */
+#charge-btn.charging {
+  animation: pulse-aura 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-aura {
+  0% {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4), inset 0 0 10px rgba(212, 175, 55, 0.2);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.8), 0 0 15px #ffffff, inset 0 0 25px rgba(212, 175, 55, 0.5);
+    transform: scale(1.04);
+  }
+}
+
+/* Sparkle Flash Triggered at 100% Charge */
+.sparkle-flash {
+  animation: flash-sparkle 0.5s ease-out forwards;
+}
+
+@keyframes flash-sparkle {
+  0% {
+    box-shadow: 0 0 50px 20px #ffffff, 0 0 80px 30px #d4af37;
+    transform: scale(1.15);
+  }
+  100% {
+    box-shadow: 0 0 0px 0px transparent;
+    transform: scale(1);
+  }
+}
 /* Layout for the 3 face-down cards */
 #cards-container {
   display: flex;
@@ -112,7 +165,7 @@ body {
   justify-content: center;
   cursor: pointer;
   border: 2px solid #d4af37;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card-back:hover {
